@@ -1,0 +1,1 @@
+This is the first project in this course. The data used for my dashboard is taken from: https://github.com/nytimes/covid-19-data. Check their repo out for more updated data. 
