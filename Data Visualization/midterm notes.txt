@@ -1,0 +1,128 @@
+Week 1: 
+	Data Wrangling:
+		Data warehouse is a system that gathers data from various sources or reporting and analytics. Commonly used in the enterprise setting.
+		A fact is a measure that is quantitative across dimensions like population across countries.
+		Tableau does allow you to treat multiple fields as a dimension.
+		Pivoting is useful for transposing your data for when the data you want to aggregate is in a single record.  
+	Data Aggregation:
+		Left joins ignore all null values in the second table, right joins ignore all null values in the first table, inner joins only consist of records that exist in both records, full outer joins include all records with filler null entries.
+		Aggregations are projections of measurements across one or more dimensions. 
+		There are quantitative aggregations like sum, min, max, etc.
+		There are count aggregations which converts ordinal or nominal data into quantitative data.
+		There is binning which discretizes quantitative data into ordinal or nominal data.
+		The elephant chart shows the increase in income from 1998 to 2008 broken into percentiles. 
+	VizQL:
+		Tableau is based on a system called Polaris.
+		VizQL is the connection between a visual presentation of the data and the ultimate query that is generated to access that data.
+		VizQL is a unified frameworks that is designed for interactivity. It is a declarative language and is compiled. 
+		Tableau converts charts specifications into database queries. 
+		Fields can be quantitative (numeric) or ordinal (non-numeric).
+		+ corresponds to concatenation which is treated like a set union.
+		x corresponds to cross product which is creating every combination of the two things its being applied to.
+		/ corresponds to nesting which is a cross product but only with combinations that actually exist. This is what Tableau implements instead of actual cross products. 
+		A table is generally used for ordinal vs. ordinal data, a bar graph is used for ordinal vs. quantitative and a scatter plot is used for quantitative vs. quantitative.
+		
+		
+Week 2:
+	The Model Human Processor:
+		Model Human Processor models humans in computational terms.
+		We read in chunks even though we don't perceive it that way.
+		Fitt's Law is that the time it takes to move your focus (or mouse) is about 600 ms + 240 ms lg(1 + D/S) where D is the distance to the target and S is the size of the target.
+		Working memory can hold about 7 items for 7 seconds each.
+		We can remember more by grouping things into chunks instead of memorizing them individually. 
+		Episodic long term memory is events, organized temporally. Semantic long term memory is facts, organized associatively.
+		We forget things by decay or interference. 
+		Sensory memory decays very quickly but supports sensory processing.
+		Working memory decays quickly but supports cognitive processing.
+		Long term memory persists indefinitely but the challenge is getting information stored. 
+		Deductive reasoning is drawing a conclusion based on the data (or logic). This only shows correlation, not causation.
+		Inductive reasoning is following "if it is true for x, it is true for x+1". This can be used for things like extrapolation or inferring.
+		Abductive reasoning is asking why. This is trying to put meaning behind data and creating models for it. 
+		Chromatic abberation is when you can not focus on every color at the same point. Avoid using pure blue because of this. 
+		The retina senses brightness with rods and colors with cones.
+		We have more cones near our center of vision but more rods in our peripheral vision.
+		We tend to focus more on warmer colors and bring them to the forefront. 
+		Surrounding something with a lighter shade will make it seem darker and vice versa because our lateral inhibition makes us accentuate differences. This also happens for orientation and size.
+		Foreshortening is when objects that are the same size but in a different depth appear shorter. 
+		Linear perspective is when objects further away seem smaller. 
+		Size constancy is that objects don't change size so further objects need to smaller and vice versa.
+		Temporal inhibition is the suppression of a response to a stimulus by presentation of a second stimulus shortly after the first. 
+	Computer Graphics:
+		Vector graphics define shapes with vertices, strokes, and fills.
+		Raster graphics define shapes with a table of pixels.
+		Rasterization is creating pixel versions of graphics. Converting primitives into pixels. 
+		Aliasing is when a straight line looks like a staircased line in pixels. 
+		The coordinates used to plot in a canvas can be different from the coordinates used to display in a canvas.
+		Screen coordinates are used for raster graphics. 
+		The origin for scalable vector graphics (SVG) is always in the upper left corner.
+		Photorealism rendering simulates cues to fool the eye into perceiving a 2D image as 3D.
+		Occlusion is when you create an ordering of objects using opacity. It is the strongest cue. 
+		Illumination helps perceive the orientation of surfaces. Diffuse illumination is when the surface is brightest when facing a light source (roughness). Specular illumination is when the surface is brightest when it is reflecting a light source (smoothness). 
+		Shadowing indicates light occlusion. It helps give depth to the image.
+		Perspective is based on size constancy. In 3D graphics, we make shapes further away smaller. 
+		Stereopsis is when you have two images and try to view them together by crossing your eyes. 
+		Non-photorealistic rendering is based on psychology of perception and contours (isntead of surfaces).
+		Non-photorealistic shading makes it easier to communicate shape without complex lighting. 
+		
+		
+Week 3:
+	Chart Selection:
+		There is a data layer, mapping layer, and graphics layer. 
+		There are discrete and continuous data types and they can be ordered or unordered.
+		Independent variable - key - dimension and dependent variable - value - measure.
+		Sorted by perceptual accuracy for quantitative data: position, length, angle/slope, area, volume, color/density.
+		Sorted by perceptual accuracy for ordinal data (only relative order matters): position, density, texture, connection, containment, length, angle/slope, area, volume. 
+		Sorted by perceptual accuracy for nominal data (values that are not comparable like shapes): position, connection, containment, density, saturation, shape, length, angle/slope, area, volume.
+		Quantitative dependent vs discrete/nominal independent -> bar chart.
+		Quantitative continuous dependent variable vs quantitative continuous independent variable -> line chart.
+		Quantitative independent variable vs quantitative independent variable -> scatter plot.
+		Discrete/nominal independent variable vs quantitative independent variable -> Gantt chart.
+		Discrete/nominal independent variable vs discrete/nominal independent variable -> table.
+		Effectiveness of using area depends on if you use other techniques like using the same shape and aligining the shapes. 
+		Cartogram is when the area of a shape is scaled based on the data value (like the distorted population map).
+		Create a cartogram by filling a grid with density data, change the area of the square based on the density value and recalculated vertices in the grid.
+		Choropleth is keeping the area consistent and changing density/saturation/hue instead which is better. 
+	Visually Ordering Data:
+		Visualize data by choosing visual encodings.
+		Filter out data to focus on relevant items.
+		Sort items to expose patterns.
+		Derive values or models from source data.
+		Stacked bar charts allow you to represent multiple dependent variables. 
+		Stacked bar charts are usually better than pie charts because they take advantage of position and length. 
+		Stacked line charts are good when data is continuous.
+		ThemeRiver is used to make stacked charts easier to visualized by putting the same data near each other. 
+		Streamgraph layout is even better than ThemeRiver. 
+		Streamgraph ordering can also improve the chart by changing the order of data based on when their values actually start to do something (change from 0).
+	Visualizing Multi-Dimensional Data:
+		Parallel coordinates are useful for plotting high dimensional data by plotting it on parallel lines. 
+		Intersects in parallel coordinate lines show points on the same slope. They can be between the parallel lines or outside of them. 
+		Principal component analysis is used for dimensionality reduction. 
+		Principal component analysis is when you find the dimensions of your data in which there is the most variance and focus on those dimensions more. You are finding the eigenvector corresponding to the largest eigenvalue of the covariance matrix which give the directions in which the data varies the most. 
+		Multidimensional scaling is also used for dimensionality reduction. 
+		In multidimensional scaling, you calculate edge lengths based on the relations (or distance) between your data and plot all of your data to preserve edge lengths. It's generally used when you want to preserve distance between points. 
+	Visualizing Relationships:
+		Trees have n nodes, n-1 edges.
+		The degree of a node is the number of edges extended from it. Directed graphs have in and out degrees.
+		Social networks have many low degree nodes and fewer high degree nodes. 
+		Adjacency matrices can be used to represent graphs. Row i, column j = 1 if node i is connected to node j. 
+		A planar embedding is when the edges do not cross. 
+		Tutte's method helps find the planar embedding of a planar graph. You create the Laplacian matrix and use it to make the adjacency matrix. Zero out any points that have already been plotted and then solve the linear system (have to do it once for x values and once for y values).
+		GEM can be used as a force directed layout. Force directed layout is like treating each node as a mass with its own "spring" and exerted force.
+		Centralities help determine where a node should be in a layout. Degree is a simple example. 
+		Isolation metric is total distance to all other nodes (Closeness centrality is 1/isolation metric and graph centrality is 1/distance to the farthest node).
+		Betweeness centrality of a node is the portion of all shortest paths between two nodes that pass through a given node (can also be computed for an edge).
+		Centralities can also be used to simplify graphs by removing edges with few shortest paths going through them to make the graph easier to read.
+		Edge bundles group "similar" edges together to clear up clutter. 
+		Community discovery is removing edges in order of decreasing betweeness centrality. It disconnects the graph and isolates nodes in clumps which are the communities. 
+		Nodes only have one parent in a tree. 
+		Treemaps map quantities to areas. Shading delineates hierarchical regions. For example, the square diagram that had smaller rectangles in it for each file in a file system with the size of the rectangle representing the size of the file. It also provides a hierarchical layout. 
+		
+		
+Week 4:
+	Visualizing Information:
+		
+	Dashboard Design:
+		
+	Documenting Your Visualization:
+		
+		
