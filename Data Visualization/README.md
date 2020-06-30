@@ -5,4 +5,4 @@ This folder contains all of the projects done in this course.
 
 Additionally, I have included my rough notes which I used when studying for the midterm.  
 
-1. Midterm(./midterm%20notes.txt)
+1. [Midterm](./midterm%20notes.txt)
