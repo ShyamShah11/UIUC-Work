@@ -7,3 +7,95 @@
     cdomain = [0,42];
     crange = ["blue","orange"];
 </script>
+
+
+<!--8-1-4 Axes--> 
+<script>
+    //draw the bars
+    xs = d3.scaleBand().domain(["0","1","2","3","4","5"]).range([0,200]);
+    ys = d3.scaleLinear().domain([0,42]).range([200,0]);
+    hs = d3.scaleLinear().domain([0,42]).range([0,200]);
+    d3.select("svg")
+    .attr("width",300)
+    .attr("height", 300)
+    .append("g")
+    .attr("transform", "translate(50,50)")
+    .selectAll("rect").data(data).enter().append("rect")
+    .attr("x", function(d,i){return xs(i);})
+    .attr("y", function(d,i){return ys(d);})
+    .attr("width", 100/3)
+    .attr("height", function(d,i){return hs(d);});
+
+    //draw the y axis
+    d3.select("svg")
+    .append("g")
+    .attr("transform", "translate(50,50)")
+    .attr("fill", "none")
+    .attr("font-size", 10)
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "end")
+    .call(d3.axisLeft(ys));
+
+    //draw the x axis
+    d3.select("svg")
+    .append("g")
+    .attr("transform", "translate(50,250)")
+    .attr("fill", "none")
+    .attr("font-size", 10)
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "middle")
+    .call(d3.axisBottom(xs));
+</script>
+
+
+<!--8-1-6 Pie Chart--> 
+<script>
+    d3.selectAll("svg")
+    .attr("width",300)
+    .attr("height", 300)
+    .append("g")
+    .attr("transform", "translate(150,150)")
+    .selectAll("path")
+    .data(pie(data))
+    .enter()
+    .append("path")
+    .attr("d", arc)
+    .attr("fill", function(d,i) {return color[i];});
+</script>
+
+
+<!--8-2-6 Fuel Efficiency Scatterplot-->
+<script>
+    //draw the circles
+    data = await d3.csv("https://flunky.github.io/cars2017.csv");
+    log= d3.scaleLog().domain([10,150]);
+    d3.select("svg")
+    .append("g")
+    .attr("transform", "translate(50,50)")
+    .selectAll("circle").data(data).enter().append("circle")
+    .attr("cx", function(d){return 200*log(d.AverageCityMPG);})
+    .attr("cy", function(d){return 200-(200*log(d.AverageHighwayMPG));})
+    .attr("r", function(d){return parseInt(d.EngineCylinders)+2;});
+
+    //draw the y axis
+    ys = d3.scaleLog().domain([10,150]).range([200,0]);
+    d3.select("svg")
+    .append("g")
+    .attr("transform", "translate(50,50)")
+    .attr("fill", "none")
+    .attr("font-size", 10)
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "end")
+    .call(d3.axisLeft(ys).tickValues([10,20,50,100]).tickFormat(d3.format("-s")));
+
+    //draw the x axis
+    xs = d3.scaleLog().domain([10,150]).range([0,200]);
+    d3.select("svg")
+    .append("g")
+    .attr("transform", "translate(50,250)")
+    .attr("fill", "none")
+    .attr("font-size", 10)
+    .attr("font-family", "sans-serif")
+    .attr("text-anchor", "end")
+    .call(d3.axisBottom(xs).tickValues([10,20,50,100]).tickFormat(d3.format("-s")));
+</script>
