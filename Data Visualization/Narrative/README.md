@@ -1,1 +1,1 @@
-This is the second project in the course. My project is hosted at https://shahshyam11.github.io/index.html and the files can be found at https://github.com/ShyamShah11/ShyamShah11.github.io/.
+This is the second project in the course. My project is hosted at https://shyamshah11.github.io/index.html and the files can be found at https://github.com/ShyamShah11/ShyamShah11.github.io/.
