@@ -1,0 +1,113 @@
+Week 7:
+	Interactive Storytelling:
+		Interactive Visualization is used for discovery, intended for single investigator or collaborators, rerenders based on input, prototype quality
+		Presentation Visualization is used for communication, intended for large groups or mass audience, does not support user input, highly polished
+		Interactive Storytelling is presentations via interactive webpages, a narrative (using data to tell a story), invites viewers to explore further, a medium for data journalism
+	Web Page Programming:
+		DOM (document object model) is a hierarchical representation of the tags on a web page
+		SVG (scalable vector graphics) can be embedded in HTML using the <svg> tag, needs width and height specified, has origin (0,0) in top left corner
+		You can position items using tag attributes (x, y) or group nodes <g>
+	D3: Data-Driven Documents:
+		d3.js is designed to facilitate interactive data visualization on the web
+		It is a js library designed to work alongside DOM and SVG
+		The fundamental contribution is approaching the DOM as a database instead of an object hierarchy
+		d3.data(data_array) binds an array of data to an array of elements
+		An array of elements can be retrieved using database query d3.selectAll(query_string) of the HTML document
+		Select methods determine what is returned even if there are chained method calls to it
+		The mapping of data to HTML elements is the update section, extra data elements go into the enter section and extra HTML elements go into the exit section
+		Antijoins are the elements in one table that are not in the other (like subtraction). So if A is the HTML elements and B is the data elements, the update section is A natural join B, the enter section is B antijoin A, and the exit section is A antijoin B
+		d3.select(selector) finds the first element matching the selector string
+		d3.selectAll(s).filter(f) filters the selection by string (or function f)
+		d3.selectAll(s1).merge(d3.selectAll(s2)) unions the two selections
+		
+		
+Week 8:
+	Chart Helpers:
+		Scales map from a domain to a range, there are linear and band scales, scales can also map to color
+		d3.pie() returns a function that maps data values to proportional arc angles
+	Event Based Programming:
+		Interactive computing creates a dialog between user and computer 
+		User Interface Design has two components: task analysis and dialog design
+		Task analysis is studying the way a person best completes a task, decomposing task into smaller steps which results in a set of basic actions that may be shared among multiple tasks
+		Dialog design is determining how the user and computer will communicate, choosing display elements, choosing user interface widgets, and connecting actions to widgets
+		The model is the application class such as database with SQL queries
+		The view formats and displays info, can have multiple of them
+		The controller initiates model and view actions, processes input as events
+		Web browser contains the controller (js) and view (css, svg) to handle events whereas web server contains the model. There is also the DOM (HTML) which works with the model but is in the web browser
+		DOM can be seen as organization of the view and also a cache of the model held at the web server. Controller and model are connected to it and it is connected to the view
+		Callback functions respond to various user actions such as onclick for a button
+		Browser adds events to the queue as they occur. Queue is executed once the current code has completed
+		Javascript is single threaded so an event (callback function) has to complete (return) before the next can start. This is because DOM is not thread safe
+		Server requests require some blocking delay while file is being loaded so js could stall but instead callbacks are used	
+		d3 uses a callback function when loading csv files so that a function can be processed after the file has been loaded and other stuff can be done in the meantime. This function is usually embedded as an anonymous function 
+		Callback hell is when you have a bunch of files you need to load and they're all calling anonymous functions
+		Instead, promises can be used so d3.csv() returns a promise object. The function defined in .then() is ran when code completes and function defined in .catch() runs if code fails. This helps with code readability but can still be hellish
+		await keyword can be used in front of the promise object (await d3.csv()). It waits for the promise to resolve and only then allows next line to continue execution. Needs to be called in an async function
+		While awaiting, js event loop can handle other events
+	Interactive & Dynamic Web Pages:
+		Callback invoked by an event on an HTML element has access to both the element and the data associated with it
+		Affordances are hints in the appearance of an object that imply the object's function
+		Voronoi regions are splitting the canvas into areas that are closer to one point than any other. Can use these to show tooltips as an affordance
+		Force directed graph layout can be used when displaying graphs (d3.forceSimulation()) to properly space everything out
+		You can use transitions by first defining styles and attributes, then chaining a .transition(), and then chaining new styles and attributes
+		
+		
+Week 9:
+	Narrative Structure:
+		Elements of visual narrative are structure (helping a user navigate a scene), highlight (directing a users attention in a scene), transition (keeping user oriented between scenes)
+		Elements of narrative structure are ordering (linear, user-directed, random-access), interactivity (number of ways the user can manipulate visualization, how the user learns to manipulate visualization), messaging (how are observations communicated or learned)
+		Visual ordering genres:
+			Video only allows user to pause and play
+			Magazine gives choice between reading text or figures or both
+			Comic strip is where you imply order by going from frame to frame
+			Flow chart conveys order using scenes and arrows 
+			Slide show is when you press an arrow to advance forward/backward
+			Partitioned poster is where a poster is partitoned into scenes with some kind of order to them
+			Annotated chart is where the chart has annotations that take you to different scenes
+	Effective Structures for Narrative Visualization:
+		Narrative visualization spectrum goes from author driven (message-focused, linear, non-interactive) to reader driven (query-focused, free-form, interactive)
+		Hybrid structures (in the middle of the spectrum) are like martini glass, interactive slideshow and drilldown story
+		Martini glass structure is when the author driven content is at the beginning and reader driven content comes at the end
+		Interactive slideshow is where you follow an author directed path and on each slide, you can drill down or explore
+		Drill down story is where data is presented in one large overview scene but there are many options to drill down
+	Creating a Narrative Visualization:
+		Narrative visualizations consist of scenes, annotations, parameters, and triggers
+		Scenes are like slides in a presentation, each scene is a single chart or coordinated set of charts
+		Annotations are used for messaging, support visual consistency, are usually cleared between scenes or can remain when building to a conclusion
+		Parameters are variables in a chart that control the scene like slide number, chart year
+		Triggers are connections between parameters
+		In Tableau, a narrative visualization is called a story and it is a sequence of story points (scenes), each represented by a sheet (chart)
+		
+		
+Week 10:
+	Declarative Programming:
+		Declarative languages focus on what a page should display and not how it displays it
+		Grammar of graphics decomposes into seven major components (data, trans, frame, coord, scale, graph, guides)
+		Imperative programming is when there are sequences of commands and each command changes the system state
+		Declarative programming is more like a specification of desired system (like a database) so HTML + CSS is declarative
+		HTML events are also declarative, it creates a database (the DOM)
+		Declarative program becomes compiled into code (usually imperative) which then gets executed
+		Control flow in imperative programming goes from start to finish (top to bottom)
+		For reactive programming, you assume there is a data stream and when data shows up, callback functions are used
+		Declarative programs generate code for the callback functions which are reactions to events in the data stream. Callback functions could be imperative but here they are declarative
+	Declarative Visualization Languages:
+		Vega is a declarative language built on top of d3. It turns the program itself into a database 
+		d3 and vega are both declarative but vega requires writing high level specification, is implemented with JSON and javascript runtime, and has declarative streaming options
+		Reactive vega uses a grammar to specify interactivity
+		Event grammar is similar to CSS syntax
+		Concatenation is done with a , and means event 1 followed by event 2
+		Can also have filters using square brackets
+		Prefiltering can be done to create a stream of events between other events like [mousedown, mouseup] > mousemove
+		Can also use time intervals for filtering using curly brackets
+		Signals are variables that change value based on events
+		Vega-lite simplifies vega but also expands vega
+		A selection represents a collection of marks chosen by the user in the visual range corresponding to a collection of data points in the data domain
+		They are represented by a minimal number of backing points (such as single points, max/min pairs of predicate functions)
+		Ellipsis is embedded in javascript as an API
+		
+		
+		
+		
+		
+		
+		
