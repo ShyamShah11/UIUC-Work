@@ -1,4 +1,4 @@
-This folder contains all of the projects done in this course. 
+This folder contains all of the content for CS: 498 Data Visualization. 
 
 1. [Dashboard Project](./Dashboard)
 2. [Narrative Visualization Project](./Narrative)
