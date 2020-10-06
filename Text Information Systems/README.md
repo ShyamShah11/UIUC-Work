@@ -6,4 +6,8 @@ This folder contains all of the content for CS: 410 Text Information Systems.
 
 *NOTE: the MP assignments are the instructors code with my solutions added in
 
+I have also included my personal notes for the exams:
+
+1. [Midterm](./midterm%20notes.txt)
+
 

@@ -1,0 +1,481 @@
+Week 1:
+	Natural Language Content Analysis:
+		Lexical analysis is part-of-speech tagging. For example, if a word is a noun/prep 
+		Syntactic analysis is parsing. For example, identifying noun phrases. This is to get the structure of the sentence.
+		Semantic analysis is getting the meaning of the sentence. So if the sentence is "a dog is chasing a boy", getting the inference that the boy is scared.
+		Pragmatic analysis is understanding why the sentence was said or the speech act. 
+		Natural language is designed to make human communication efficient. So we omit common sense info and keep a lot of ambiguities making it hard for computers.
+		There can be word-level ambiguity. This is where the same word can have multiple meanings or can be a noun and a verb.
+		Syntactic ambiguity like in the phrase "natural language processing" which can be interpreted in two different ways. 
+		Anaphora resolution is when propositions could refer to more than one thing. 
+		Presupposition is when a sentence can imply behaviour from before. 
+		We can already do POS tagging pretty well and partial parsing also pretty well but not at 100%. But we aren't there yet for inferencing. 
+		We can't do 100% POS tagging, general complete parsing, or precise deep semantic analysis.
+		Must be general robust and efficient (shallow NLP) for text retrieval. Bag of words representation tends to be sufficient. 
+		Some text retrieval techniques can naturally address NLP problems. (ie. the meaning of "Java" in a query can be determined based on the other words in the query)
+		Some search tasks require may require deeper NLP.
+		
+	Text Access:
+		Two modes of text access (pull vs push)
+		Pull mode (search engines) is when the user takes initiative and ad hoc info is needed.
+		Push mode (recommender systems) is when the system takes initiative and there is a need for stable information or the system has good knowledge about the user's needs.
+		Querying and browsing are two types of pull mode.
+		Querying is when the user enters a keyword query and the system returns relevant documents. This is good when the user knows what keywords to use.
+		Browsing is when the user navigates into relevant information by following a path. It works well when the user wants to explore info, doesn't know what keywords to use, or can't easily enter a query.
+		Information seeking is like sightseeing, you go to the address of an attraction if you know it, otherwise you walk around and taxi nearby and then walk there.
+		
+	Text Retrieval Problem:
+		Text retrieval is when the system responds to the users query with relevant documents. A broader name for it is information retrieval and it's known as search technology in industry.
+		TR vs Database Retrieval:
+			Unstructured/free text vs. structured data
+			Ambiguous vs. well defined semantics for the query and information
+			Incomplete vs. complete query specification
+			Relevant documents vs. matched records returned
+			TR is an empirically defined problem (can't mathematically prove one methods better than the other). Evaluation relies on users
+		Vocabulary set of a language is the set of words in it (V)
+		Query is the sequence of words used in the query (q in V)
+		Document is the sequence of words in the document (d in V)
+		Collection is a set of all documents (C)
+		Set of relevant documents is a subset of the collection. It is generally unknown and user-dependent and relies on the query (R(q) in C)
+		Task is to compute an approximation of the relevant documents (R'(q))
+		First strategy to compute R'(q) is document selection. Use an indicator function f(d,q) which is a binary classifier. System decides on absolute relevance (either it is or isn't)
+		Second strategy is document ranking where f(d,q) is a relevance measure that returns a real value and the user picks a cutoff/threshold value for where to stop for relevant documents. The system only decides if a doc is more relevant than another (relative relevance)
+		With document selection, the classifier is unlikely accurate. The query may over/under constrain and it's hard to find the right position between the two. Also, some documents may be more relevant than others so ranking is generally referred.
+		Probability Ranking Principle: returning a ranked list of documents in descending order of probability that a docuent is relevant to the query is the optimal strategy under the following two assumptions:
+			The utility of a document to a user is independent of the utility off any other document (so we can calculate the relevance of docs independently)
+			A user would browse the results sequentialy
+		But these two assumptions don't always hold but PRP still establishes a solid basis
+		The main challenge is designing an effective ranking function f(q,d)
+		
+	Overview of Text Retrieval Methods:
+		Retrieval model is the formalization of relevance (giving a computational definition of relevance). 
+		Similarity-based models is where f(q,d) = similarity(q,d). One example is the vector space model.
+		Probabilistic models is where f(q,d) = p(R=1|d,q) where 0 <= R <= 1. Examples of the classic probabilistic model, language model, and divergence-from-randomness model.
+		Probabilistic inference model is where f(q,d) = p(d->q)
+		Axiomatic model is where f(q,d) must satisfy a set of constraints
+		All of these models tend to result in similar ranking functions. 
+		Common ideas in state of the art retrievel models uses the bag of words assumption. You determine the relevance of each word with a document using another function g(v,d). This function can have many factors affecting it like term frequency (c(v,d)), document length (|d|), document frequency (df(v)) which is how often the word occurs in the entire collection.
+		Four major models that perform the best are pivoted length normalization, BM25, query likelihood, and PL2. BM25 is the most popular
+		
+	Vector Space Model - Basic Idea:
+		Is a case of similarity-based models. 
+		The idea is that you use a high dimensional space (with a dimension for each term). All documents and the query would be placed in this vector space and you measure the space between documents and the query vector to determine the ranking.
+		Represent a document or query with a term vector. Each term defines one dimension. A query vector q is query term weight and doc vector d is doc term weight. 
+		VSM is a framework, it doesn't tell you how to define the basic concept. Concepts are assumed to be orthogonal but two similar terms maybe shouldn't be.
+		It also doesn't tell you how to place docs and queries into the space. Term weight in query indicates importance of the term, and in the document it indicates how we the term characterizes the doc. 
+		It also doesn't define the similarity measure
+		
+	Vector Space Retrieval Model - Simplest Instantiation:
+		Dimension instantiation using bag of words representation. So each word in vocab gets it's own dimension
+		Use a bit vector to place vectors. So elements in the vector are 1 if the word is present and 0 otherwise. 
+		Use dot product to measure similarity. 
+		This isn't that great because it just matches words and doesn't consider context of those words. 
+		
+		
+		
+Week 2:
+	Vector Space Model - Improved Instantiation:
+		Want to give more credit for more matches and want to give more importance to matching rarer words
+		Consider using term frequency (TF) instead of absence or presence to give more credit for more matches
+		Also use inverse document frequency (IDF) to give more importance to matching rarer words
+		So now each element in the document vector is c(W_i,d)*IDF(W_i)
+		IDF(W) = log((M+1)/k) where M is the total number of docs in the collection and k is the total number of docs containing W. The max value is log(M+1) 
+		A linear IDF wouldn't work because the value falls off faster with the log function and so we can pick a point after which terms aren't relevant anymore and their values don't change more. A linear IDF would not allow you to really focus on terms with low document frequency.
+		
+	TF Transformation:
+		There is still an issue where one word occuring many times can overpower everything else. So if there is one term with high IDF and high TF, it'll make the document seem very relevant when it may not be.
+		We don't want to weigh each occurence with the same value. So we use a TF transformation c(w,d) -> TF(w,d).
+		The best performing function to use for TF is called the BM25 transformation where if x=c(w,d), TF(w,d)=((k+1)x)/(x+k). k+1 is the upper bound of this function. 
+		BM25 gives the intuition of diminishing return from higher TF and avoids dominance by one single term over all others
+		If k is set to 0, we are using the 0-1 bit transformation function. If we set k to a very large number, it'll look like the linear transformation function. This makes BM25 robust and effective.
+		So no we have replaced the original TF c(w,d) with the BM25 TF transformation function: TF(w,d)=((k+1)x)/(x+k) where x=c(w,d)
+		
+	Doc Length Normalization:
+		We want to change the ranking for two documents that have the same matching words but have different lengths.
+		Want to penalize a long doc with a doc length normalizer but we want to make sure we avoid over-penalization and we want to differentiate between a long document because of more words vs a long document because of more content
+		Pivoted length normalizer: average doc length as a pivot. So a document with the average document length (avdl) is given a normalizer of 1
+		This normalizer is implemented as 1-b+b(|d|/avdl) where 0<=b<=1. If b=0, there is no normalization. A larger b means more penalization and reward for document length.
+		Pivoted length normalization VSM uses double logarithm instead of BM25, and divides it by the document length normalizer (1-b+b(|d|/avdl))
+		BM25/Okapi uses the BM25 TF transformation but divides it by the document length normalizer
+		Further improvements of VSM could be to improve the instantiation of dimensions. Consider stemmed words (root form of words), stop word removal, phrases, latent semantic indexing (word clusters) and character n-grams. In practice, bag-of-words with phrases is often sufficient
+		Language-specific and domain-specific tokenization is important to ensure "normalization of terms"
+		Another improvement could be to the similarity function. Could use the cosine of angle between two vectors or Euclidean. But dot product seems still the best because it is sufficiently general especially with appropriate term weighting.
+		BM25F is using BM25 for documents with structures (ie. title field, abstract, anchor text). Combine the frequency count of terms in all fields and then apply BM25. This helps to give a better depiction of word occurences since the first occurence in each field is considered
+		BM25+ addresses the problem of over penalization of long docs by adding a small constant to TF. Epirically and analytically shown to be better than BM25.
+		BM25 and pivoted normalization seem to be most effective in general though
+		BM25 was derived from a probabilistic model but we consider it a similarity based model 
+		
+	Implementation of TR Systems:
+		Documents are processed by a tokenizer and then stored in an index. The query is also processed by the tokenizer and a scorer takes the document index and the query representation and gives the user results. 
+		The user can also give feedback which can be fed back to the scorer.
+		The document index is typically created offline and the query processing is done online. Feedback can be done either online or offline
+		Tokenization is noramizing lexical units. Words with similar meanings get mapped to the same indexing term. Stemming is mapping all inflectional forms of words to the same root form. But need to be careful to not lose the meaning of the original word when using stemming.
+		Indexing is converting documents to data structure that enables fast search. Inverted index is most common for basic search algorithm. Other indices may be needed for feedback
+		Inverted index is having a dictionary with each term, # of docs it appears in, and total frequency and each entry points to the start index in a posting table that lists the doc IDs and the term frequency in them. Sometimes we also want to store the position that the term appeared in the document in the postings table (ie. was it the first word). 
+		Inverted index is good for single-term queries, and multi-term boolean queries (ie. "A" AND "B"/ "A" OR "B")
+		Also works for a multi-term keyword query by treating it as a disjunctive Boolean query "A" OR "B" and aggregating the term weights
+		Inverted index is more efficient than sequentislly scanning because of the empirical distribution of words. A few words occur very frequently but most words occur rarely
+		Zipf's Law is that rank(by frequency)*frequency is approximately a constant. 
+		Words can be split into 3 categores, high (low rank, high freq), intermediate (middle rank, middle freq), and rare (high rank, low freq) frequency words. Stop words are usually high frequency and they are often removed. Doing this saves space in inverted indexes.
+		The dictionary for inverted index is modest size, needs fast random access, and is preferred to be in memory. 
+		The postings for inverted index is huge, sequential access is expected, can stay on disk, may contain docID, term freq, term pos, etc. and compression is desirable (bc it saves disk space and speeds up the loading).
+		
+	System Implementation - Inverted Index Construction:
+		Main difficulty is to build a huge index with limited memory
+		Sort based methods are commonly used
+			1. Collect local (termID, docID, freq) tuples
+			2. Sort local tuples (to make "runs")
+			3. Pair-wise merge runs
+			4. Output inverted file
+		So you gather tuples of termID, docID, freq by going through the docs sequentally until you run out of memory so all the tuples would be sorted by docID (parse & count)
+		You then sort them by termID instead and write to a temporary file on disk("local" sort) 
+		Then you merge sort all of the temporary fies by termID (merge sort)
+		In general, leverage skewed distribution of values and use variable-length encoding
+		For TF compression, small numbers tend to occur far more frequently than large numbers. Fewer bits for small (high frequency) integers at the cost of more bits for large integers.
+		For DocID compression, can use the "d-gap" which is storing the difference between adjacent docIDs which is usually smaller numbers. This is feasible due to the sequential access of documents
+		Binary coding is equal length coding
+		Unary coding is coded as x-1 one bits followed by 0, so 3=110 and 5=11110
+		Gamma coding is to use the unary code for 1+floor(log(x)) followed by uniform (binary) code for x-2^(floor(log(x))) in floor(log(x)) bits, so 3=101, 5=11001 **all logs are base 2**
+		Delta coding is the same as gamma coding but the unary prefix is replaced with the gamma code
+		The right method depends on the distribution but gamma is generally considered the best
+		To uncompress inverted index, encode integers based on the coding strategy used first and then decode doc IDs encoded using d-gap sequentially
+		
+	System Implementation - Fast Search:
+		General form of scoring function: f(q,d)=fadj(h(g(t1,d,q),...,g(tk,d,q)),fdoc(d),fquery(q))
+		Function g gives the weight of a matched query term in d. h aggregates the weights and the f functions are final score adjustments
+		fdoc(d) and fquery(q) are pre-computed
+		Maintain a score accumulator for each d to compute h
+		For each query term ti, 
+			fetch the inverted list {(d1,f1),...,(dn,fn)}
+			for each entry (dj,fj) compute g(tj,dj,q) and update score accumulator for doc di to incrementally compute h
+		This way we only touch documents that matched query terms
+		Accumulators for each document are initialized to 0 and once they have all been calculated, then you can do length normalization and other heuristic
+		You want to process the rarer terms first 
+		Further improve efficiency by using cache, keeping only the most promising accumulators. Would need parallel processing to scale up to the web scale
+		
+		
+		
+Week 3:
+	Evaluation of TR Systems:
+		Evaluation is important to assess actual utility of a TR system (usually done through user studies) and to compare different systems and methods (usually done through test collections)
+		We want to measure effectiveness/accuracy, efficiency, and usability
+		Cranfield Evaluation Methodology: build reusable test collections and define measures (a sample collection of documents, sample set of queries/topics, relevance judgements -> ideal ranked list, measures to quantify how well a system's result matches the ideal ranked list)
+		The test collection can then be reused many times to compare different systems
+		But how do we quantify which is better? It could be the one that returns fewer non-relevant docs or the one that returns more relevant docs
+		
+	Evaluation of TR Systems - Basic Measures:
+		Precision is the number of relevant documents returned/number of all documents returned
+		Recall is the number of relevant documents returned/number of all relevant documents
+		Ideal results would be to have precision=recall=1
+		In reality, high recall tends to be associated with low precision
+		F-measure is combining precision and recall. If you set the parameter (beta) to 1, the formula is 2PR/(P+R)
+		The simplified formula is ((B^2 + 1)P*R)/(B^2 P + R)
+		To give more weight to the Precision, we pick a Beta value in the interval 0 < Beta < 1
+		We can't really use an arithmetic mean because a really high recall/precision will overpower the other
+		Tradeoff between precision and recall depends on the user's search task
+		
+	Evaluation of TR Systems - Evaluating Ranked Lists - Part 1:
+		We have to pick a number of documents to stop at when evaluating precision and recall of different systems
+		Precision-Recall (PR) curves are useful for comparing rankings
+		If a curve is plotted higher (on the y axis), the higher curve is better because at the same recall, you have high precision
+		If the two curves cross each other, then it depends on the user so it would be good to have a single number to measure with
+		Average precision is the area under the PR curve. You take the precision at each recall level and get the average. 
+		If only 4 relevant documents are retrived, precision is considered to be 0 when looking at the recall for the 5th+ documents
+		So you add up the precision for each time the recall increases for the retrived documents, and divide it by the total number of relevant docs in the collection
+		Average precision combines recall and precision and is sensitive to changes where documents are ranked in the retreival
+		
+	Evaluation of TR Systems - Evaluating Ranked Lists - Part 2:
+		Mean Average Precision (MAP) is the arithmetic mean of average precision over a set of queries. There is also gMAP which is the geometric mean instead
+		MAP is more affected by easy queries (high average precision, the ones that are easy to retrieve relevant documents for) and gMAP is affected more by the harder queries (smaller numbers) so you would pick which one to use based on the use case
+		Special case: mean reciprocal rank. This is for when there's only one relevant doc in the collection (known item search). Average precision = reciprocal rank = 1/r where r is the rank position of the single relevant doc. So MAP becomes mean reciprocal rank
+		We don't just use r because it will be overpowered for the larger values
+		The actual utility of a ranked list depends on how many top-ranked results a user would examine
+		
+	Evaluation of TR Systems - Mutli-Level Judgements:
+		What if we want to rate documents instead of just determining if they are relevant or not
+		Gain is reffered to what is gained by looking at a document (or it's relevance rating)
+		Cumulative gain is the total gain of all docs looked at by the user
+		Discounted cumulative gain (DCG) is where you instead add the gain/log(rank) to give higher value for higher ranked, higher gain documents
+		Ideal DCG would be the DCG if all of the most relevant docs are returned at the top of the list
+		Normalized DCG is DCG/Ideal DCG. This maps values to a range of 0-1. This allows you to compare different topics/queries to each other
+		NDCG is applicable to judgements in a scale of [1,r], r>2
+		NDCG measures the total utility of the top k documeents to a user
+		
+	Evaluation of TR Systems - Practical Issues:
+		Challenges in creating a test collection are getting a collection of queries and documents that are representative and many. There also need to be many relevant docs for each query in the doc collection. 
+		For the relevance judgements, there is a tradeoff between completeness vs. minimum human work 
+		For measures, we want to capture the perceived utility by users which can also be tough
+		Statistical Significance Tests are to check that the observed difference doesn't simply result from the particular queries you chose
+		Instead of taking the MAP for each system, you can do a sign test (+ if system A is better, - otherwise). The p-value is adding all of the signs up (treating + as 1, - as -1)
+		Wilcoxon is subtracting one systems MAP from the others
+		Pooling is to help pick which subset should be judged since we can't afford to judge all of the docs in the collection
+		Pooling strategy:
+			Choose a diverse set of ranking methods (TR systems)
+			Have each return top-K docs
+			Combine all the top-K sets to form a pool for human assessors to judge
+			Other unjudged docs are assume to be non-relevant (though they don't have to be)
+			Okay for comparing systems that contributed to the pool, but problematic for evaluating new systems
+		
+		
+		
+Week 4:
+	Probabilistic Retrieval Model - Basic Idea:
+		f(d,q) = p(R=1|d,q), R is either 0 or 1
+		Classic probabilistic model -> BM25, language model -> query likelihood, divergence-from-randomness model -> PL2
+		Query likelihood is that p(R=1|d,q) ~ p(q|d,R=1) or if the user likes doc d, how likely would the user enter query q to retrieve it
+		f(q,d)=p(R=1|d,q)=count(q,d,R=1)/count(q,d) or the percentage of times a user entered query q, got doc d as a result, and found it relevant
+		The assumption made is that the user formulates a query based on an imaginary relevant doc
+		Language models are used to compute p(q|d) or more generally, how to compute probability of text
+		
+	Statistical Language Model:
+		A statistical language model is a probability distribution over word sequences. It is context-dependent and can also be regarded as a probabilistic mechanism for generating text, thus also called a generative model
+		Language models (LM) are useful to quantify the uncertainties in natural language. For example, if we see "john" and "feels", how likely will we see "happy" vs "habit"
+		Unigram LM generates text by generating each word independently
+		So p(w1 w2 w3) = p(w1)p(w2)p(w3)
+		The sum of all p(wi)=1 for every word in the vocab
+		Text is the sample drawn according to this word distribution
+		You can have a unigram LM for different topics (such as text mining and health) 
+		Maximum likelihood (ML) estimator: p(w|theta)=p(w|d)=c(w,d)/|d| where theta is the LM, so you can use text (docs) to estimate a LM 
+		LMs can also be used for association analysis. Words with high probability but are not high probability in the background (general background English text) LM like "the" or "a" are probably associated with each other
+		Normalized topic LM can be obtained by taking p(w|topic LM)/p(w|background LM)
+		So LM can be used to represent a topic or discover word associations
+		
+	Query Likelihood Retrieval Function:
+		p(q="a b"|d)=p("a"|d)*p("b"|d)=c("a",d)/|d| * c("b",d)/|d|
+		Assumption is that each query word is generated independently but the problem is that if a term doesn't occur at all, then it query likelihood will be forced to 0
+		So we will make an improvement and assume that every word in the query is not pulled from the document but isntead from a doc model
+		What we can instead compute now is the sum (over all words in the vocabulary) of c(w,q)*log(p(w|d)) where p(w|d) is the document language model
+		We have turned the retrieval problem into an estimation of p(wi|d) 
+		Different estimation methods -> different ranking functions
+		
+	Statistical Language Model - Part 1:
+		If we use maximum likelihood estimate for p(w|d), then all words with the same count, have the same max likelihood 
+		In order to get rid of words having 0 probability, we can smooth the function (but keep in mind the probabilites need to add up to 1)
+		How to assign probability of unseen word:
+			Let it be proportional to its prob in a reference LM. Let the reference LM be the collection LM
+			So p(w|d) = p(w|d) if the word is seen in doc d (discounted ML estimate) and alpha_d*p(w|C) if it isn't (collection LM)
+		
+	Statistical Language Model - Part 2:
+		We rewrite the calculation in a way that enables efficient computation and shows us the TF-IDF weighting + length norm.
+		The p_seen(w|d)term is TF weighting because it will be higher for terms that appear frequently in the doc
+		The alpha_d*p(w|C) term is IDF weighting because it represents the popularity of the term in the collection but is in the denominator
+		The n*log(alpha_d) is length normalization because alpha_d encodes doc length. If the doc is long we would need to do less smoothing so it would be smaller and vice versa
+		Scoring is primarily based on sum of weights on matched query terms
+		
+	Smoothing Methods - Part 1:
+		We still need to determine how to estimate p_seen(w|d) and pick alpha_d
+		Linear Interpolation (Jelinek-Mercer) Smoothing: 
+			use collection LM and ML estimator and a smoothing parameter lambda. 
+			(1-lambda)*c(w,d)/|d| + lambda*p(w|C)
+			This ensures that no non-zero probabilities are used
+			Fixed coefficient linear interpolation
+		Dirichlet Prior (Bayesian) Smoothing:
+			Similar to linear interpolation but with a dynamic coefficient (lambda) that makes longer documents have a smaller coefficient
+			In other words, we take the ML estimator, and add the collection LM probability to every word instead of just the matching ones
+			You are adding pseudocounts from the collection LM to the document for calculation purposes (adaptive interpolation)
+		n is the length of the query
+		
+	Smoothing Methods - Part 2:
+		When using JM smoothing, we can ignore the length normalization term because it no longer depends on the document since alpha_d is lambda
+		When using DIR smoothing, we do not ignore the length normalization term because alpha_d is dynamic
+		Both lead to state of the art retrieval functions with assumptions clearly articulated (less heuristic)
+		Assumptions made:
+			Relevance(q,d)=p(R=1|q,d)~=p(q|d,R=1)~=p(q|d)
+			Query words are generated indepdently
+			Smoothing with p(w|C)
+			JM or DIR smoothing
+		
+		
+		
+Week 5:
+	Feedback in Text Retrieval:
+		Relevance feedback is when users make explicit relevance judgments on the initial results. They are reliabe, but users don't want to make extra effort
+		Pseudo/Blind/Automatic feedback is when top-k initial results are simply assumed to be relevant. Judgments are not reliable but no user activity is required.
+		Implicit feedback is when user-clicked docs are assumed to be relevant and skipped ones are not. Judgments are not completely reliable but no extra effort from users
+		
+	Feedback in Vector Space Model - Rocchio:
+		General method is to modify the query vector 
+		A visualization of Rocchio feedback is to plot all documents and the query vector, and to move the query so that most of the nearest docs are relevant. So you want to move the query vector to the centroid of relevant docs
+		The general form is that the new query vector is the old query vector + centroid vector of rel docs - centroied vector of non-rel docs. Each part has it's own parameter to control the weight of the part
+		You can get the centroid by adding up all doc vectors and dividing it by the total number of docs
+		In practice, we only use the parts of the query vector that correspond to the actual query (so weights for words that aren't in the query don't change from 0)
+		Non-relevant examples are not that useful compare to relevant ones. This is because negative docs are usually spaced out so the centroied isn't that valuable
+		Avoid over-fitting by keeping relatively high weight on the original query
+		Can be used for relevance and psuedo feedback. Beta (parameter for rel docs) should be larger for relevance feedback than for pseudo
+		Usually robust and effective
+		
+	Feedback in Text Retrieval - Feedback in LM:
+		Query likelihood method cant naturally support relevance feedback
+		Kullback-Leibler (KL) divergence retrieval model as a generalization of query likelihood is a solution (cross entropy)
+		KL-divergence formula looks very familiar to query likelihood but instead of using c(w,q) we use the probability of a word given a query language model
+		KL-divergence is a generalization of query likelihood because QL can be derived from it
+		A mixture model is when there are two models being used together (topic model and background model). To determine which one is used for a word, you have a parameter (lambda). Lambda is the probability of using the background model
+		A background model is used to identify common words like "the"
+		You want to tune the topic word language model parameter 
+		Generally, as lambda is smaller, you have more common words because the topic model is not being tuned to filter them out as much
+		
+	Web Search: Introduction & Web Crawler:
+		Challenges with web search:
+			Scalability
+			Low quality info and spam
+			Dynamics of the web (new pages constantly being created and pages being updated)
+		Building a toy crawler is easy but a real crawler is much more complicated because:
+			Robustness
+			Crawling courtesy
+			Handling file types
+			URL extensions
+			Recognize redundant pages
+			Discover hidden URLs
+		Breadth-first is common to balance server load
+		Parallel crawling is natural
+		Focused crawling is targeting a subset of pages (like all pages about automobiles). They are typically given a query
+		Finding new pages can be hard if they aren't linked to an old page
+		Incremental/repeated crawling is targetting at frequently updated/accessed pages
+		
+	Web Indexing:
+		After crawling the web, we need to create an index
+		Main challenges for web indexing are scalability and efficiency
+		Google File System (GFS), MapReduce, and Hadoop are Google's contributios
+		GFS client contacts GFS master which keeps track of the chunk that the file is at and then the specific GFS chunkserver sends the data back to the client
+		GFS also stores index on multiple machines
+		MapReduce minimizes efforts of programmer for simple parallel processing tasks
+		The map function takes key value pairs from input and outputs new key value pairs sorted based on key. All values with the same key are grouped together so each key has a group of values and then the pairs are passed to the reduce function which then outputs another set of key value pairs for the output.
+		Programmer only needs to write the map and reduce functions
+		Inverted index can be created using MapReduce, where the map function outputs the word as the key and the docID, word count as the value and the reduce function aggregates the values for each key together
+		
+	Link Analysis - Part 1:
+		Standard IR models apply but aren't sufficient bc of different info needs, documents having additional info, and info quality varying a lot
+		Anchor text is useful because it's probably similar to what a user would type as a query
+		Matching anchor text that describes a link to a page is valuable
+		Links can also indicate the utility of a doc. There can be cases where a lot of pages point to a page (authority page) or a page points to a lot of pages (hub page)
+		PageRank considers link as citations in literature. A page that is cited often can be expected to be more useful in general
+		PageRank is essentially citation counting with improvements
+		PageRank also considers indirect citations (such as being cited by a highly cited page). Every page is assumed to have a non-zero pseudo citation count 
+		PageRank can be interepreted as randomly surfing the web
+		
+	Link Analysis - Part 2:
+		A random surfer has a probability of alpha to jump to another random page, and probability of 1-alpha to pick a link to follow
+		The random jump to another page is basically smoothing which PageRank uses to make sure there are no 0 entries in a transition matrix
+		If we drop the time in the equilibrium equation, we can get a system of N equations where N is the number of docs
+		This also gives us a way to find the eigenvector of the matrix
+		Initial values of p(d) = 1/N 
+		If you keep multiplying the initial values by the matrix, it will eventually converge
+		Scores are propogated over the graph 
+		Computation can be quite efficient since M is usually sparse
+		Normalization does not affect ranking, leading to some variants of the formula
+		The zero-outlink problem is that p(di)'s don't sum to 1. One possible solution is to use a page-specific damping factor (alpha=1 for page with no outlink so the surfer will have to randomly jump)
+		
+		
+		
+Week 6:
+	Future of Web Search:
+		More specialized/customized (vertical search engines)
+		Learning over time (evolving)
+		Integration of search, navigation, and recommendation/filtering (full-fledged information management)
+		Beyond search to support tasks (e.g., shopping)
+		The Data-User-Service (DUS) Triangle: who are you serving, what kind of data are you managing, and what services are provided
+		Current search engines consist of keyword queries, bag of words, and search but the future can evolve all three of them to complete user model (personalization), knowledge representation (large-scale semantic analysis), and task support (intelligent and interactive task support)
+		
+	Recommender Systems: Content Based Filtering - Part 1:
+		Recommender systems are push mode access
+		Sometimes called a filtering system because you filter out non useful items
+		Two ways of answering it: look at what items U likes and check if X is similar (item similarity -> content-based filtering) or look at who likes X and check if U is similar (user similarity -> collaborative filtering)
+		For content-based filter, a utility function is used to guide the user to make decisions. It helps the system decide what the threshold is
+		The binary classifier is initialized based on the user profile text
+		There is also a learning module that learns from the users feedback over time.
+		We need to evaluate in real time so we need an absolute relevance. Can use a linear utility function (ie. 3*# of good docs - 2*# of bad docs)
+		The choice for the coefficients depends on specification
+		Three basic problems in content-based filtering:
+			Making a filtering decision (binary classifier)
+			Initialization is based on only profile text or very few examples
+			Learning from limited relevance judgments (only "yes" docs)
+		Extend a retrieval system for information filtering:
+			Reuse retrieval techniques to score docs
+			Use a score threshold for filtering decision
+			Learn to improve scoring with traditional feedback
+			New approaches to threshold setting and learning
+		Feedback info is used to adjust the threshold and vector learning parts of the vector-space approach
+		
+	Recommender Systems: Content Based Filtering - Part 2:
+		Difficulties in threshold learning:
+			Censored data (judgments only available on delivered docs)
+			Little/none labelled data
+			Exploration vs. Exploitation: don't want to explore too much but it's also valuable to experiment with new docs
+		Empirical Utility Optimization:
+			Compute the utility on training data for each candidate score threshol
+			Choose the threshold that gives the max utility on the training data set
+			We can only get an upper bound for the true optimal threshold, could a discarded item be possibly interesting to the user?
+		Beta-Gamma threshold learning is setting the threshold between the optimal threshold (where utlity is the highest) and zero threshold (where utility hits 0)
+		The formula for this is alpha*zero threshold + (1-alpha)*optimal threshold
+		Want to encourage exploration up to zero threshold
+		Alpha=beta+(1-beta)*e^(-N*gamma) where beta controls deviation from optimal threshold and gamma controls the inference of the number of examples in the training data set. If we see many datapoints, we don't want to do much exploration
+		Beta-gamma explicitly addresses exploration-exploitation tradeoff, has arbitrary utility (with appropriate zero threshold lower bound) and is empirically effective. however, it is purely heuristic and the zero utility lower bound is often too conservative
+		Content based recommender systems can be built based on a search engine system by adding a threshold mechanism and adaptive learning algorithms
+	
+	Recommender Systems: Collaborative Filtering - Part 1:
+		Making filtering decisions for a user based on judgments of other similar users
+		General idea is given a user u, find similar users (u1,...un) and predict u's preferences based on their preferences. User similarity can be judged based on their similarity in preferences on a common set of items
+		Assumptions:
+			users with same interest will have similar preferences
+			users with similar preferences probably share the same interests
+			sufficiently large number of user preferences are available (otherwise there will be a cold start problem)
+		We assume users can give ratings to the objects (ie. movie ratings) and want to find the unknown function that maps an user and object to a rating
+	
+	Recommender Systems: Collaborative Filtering - Part 2:
+		This is called a memory based approach
+		Normalize ratings from a user by subtracting the average rating of all objects by a user to each rating 
+		The idea is to take a normalized sum over all users ratings on the same object, but give their ratings a weight based on the similarity of the users. The approach to calculating similarity can differ (ie. distance between the users)
+		You add the users average rating to their predicted rating to get a meaningful rating when evaluating, otherwise for the actual recommendation, use the normalized rating
+		Some popular similarity measures are the Pearson correlation coefficient (sum over commmonly rated items) and the cosine measure
+		Set missing values to default ratings (like average ratings) for a simple workaround. You could also predict these values
+		Inverse User Frequency (IUF) is similar to IDF. If two users share similar ratings over rare items and gave the same rating, it means more than for popular items
+	
+	Recommender Systems: Collaborative Filtering - Part 3:
+		Filtering/recommendation is easy because the users expectation is low and any recommendation is better than none
+		Just filtering is hard because it must make a binary decision, may have data sparseness (limited feedback info) or cold start (little info about users at the beginning)
+		There are also content-based and collaborative hybrids
+		Recommendation can be combined with search (push+pull)
+		
+	Summary for Exam 1:
+		NLP is foundation for TR, but current NLP isn't robust enough; BOW is sufficient for most search tasks
+		Push vs pull, querying vs browsing
+		TR as a ranking problem
+		Many retrieval methods such as VSM, LM and talked about TF-IDF and length normalization. Modern retrieval methods look similar. TF is often transformed through a sublinear transformation function
+		Implement a retrieval system using inverted index (prepare system to answer query quickly) + fast search (using inverted index)
+		Evaluate TR systems with Cranfield evaluation methodology. Major measures are MAP, nDCG, precision, recall
+		We talked about feedback techniques and Rocchio in the vector space model and the mixture model in the language model approach
+		We talked about web search and using MapReduce for parallel indexing, PageRink, HITS, learning to rank, and future of web search
+		Recommendation systems: content-based and collaborative filtering which can be combined together
+		User interfaces is also important
+	
+		
+		
+	
+		
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
