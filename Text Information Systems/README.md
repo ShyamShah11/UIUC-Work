@@ -14,3 +14,7 @@ My personal notes for the exams:
 Link to the tech review:
 
 1. [Tech Review](https://github.com/ShyamShah11/tech_review/blob/master/techreview.pdf)
+
+Link to my final project, which was classifying faculty URLs for ExpertSearch:
+
+1. [Final Project](https://github.com/ShyamShah11/CourseProject)
