@@ -10,6 +10,7 @@ This folder contains all of the content for CS: 410 Text Information Systems.
 My personal notes for the exams:
 
 1. [Midterm](./midterm%20notes.txt)
+2. [Exam](./exam.txt)
 
 Link to the tech review:
 
