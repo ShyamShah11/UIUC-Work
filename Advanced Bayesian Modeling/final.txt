@@ -1,0 +1,444 @@
+7.1 Sampling with Markov Chains
+7.1 Dependent Versus Independent Sampling
+	simulation based on independent sampling is limited by special cases (such as being limited by what's implemented in software), is only effective in low dimensions, or requires tailoring to be efficient (which is time consuming)
+	by instead sampling from the posterior but **not** independently, we admit a wider variety of simulation methods including ones that work for high dimensional models. But this requires more samples for a given accuracy
+	dependent samples can be used to approximate Bayesian tools in the same way as independent samples
+		samples averages approx posterior expectation
+		sample quantiles approx posterior quantiles
+		forward sampling can approx posterior predictive distribution
+	Monte Carlo standard errors are usually larger than in independent cases
+	the Markov property is that the sth component of theta (the sth variate) is independent of all other variates given the adjacent variates (s-1th and s+1th variates)
+	we call a sequence of variates a Markov chain if it has the Markov property, and using it for simulation is called Markov chain Monte Carlo (MCMC)
+	
+7.1 Markov Chains
+	a sequence of random variables is a Markov chain if for each t>1, theta^t is conditionally independent of all previous thetas given theta^t-1
+	the value of theta^t is the state of the Markov chain at time t (or the draw at iteration t)
+	usually draws are dependent despite the conditional independence
+	the transitional distribution is the conditional distribution of theta^t given theta^t-1
+	it's density is the transition kernel. ie. for iteration t, T_t(theta^t | theta^t-1)
+		transition kernel can depend on t (the time index)
+	if the transition distirbution does not depend on t, the Markov chain is time-invariant or time-homogeneous
+	a distribution on states of a time-invariant Markov chain is stationary if all subsequent draws have that distribution whenever the first draw does
+		so if theta^0 has the stationary distribution, then so does theta^1, theta^2, etc.
+		possible to have multiple stationary distributions but under certain technical conditions on the transition distribution, there is a unique stationary distribution
+	time-invariant Markov chains may converge to a limiting distribution (as t -> infinity)
+		under certain technical conditions, the limit distribution is the unique stationary distribution
+	key strategy is to simulate sequentially from a Markov chain that has the posterior as its stationary (and hopefully limiting) distribution
+		but how to construct a Markov chain with a given stationary distribution
+		also there will be transient effects from not starting in the stationary distribution, how to handle them
+		how to deal with dependence between successive iterates
+		
+7.2 Gibbs Sampling
+7.2 The Gibbs Sampler
+	conditional posterior (or full conditional) has density p(theta_j | theta_-j, y) so theta_j is conditional on every other theta and y
+	Gibbs sampler algorithm is:
+		choose a starting value theta^0
+		for t = 1, 2, ...
+			set theta* = theta^t-1
+			for j = 1 to d, replace theta*_j with a sample from p(theta_j | theta*_-j, y)
+				so all previous theta*_j (ie. j = 1:5) are used to generate the next theta*_j (ie. j=6)
+			let theta^t = theta*
+		continue until sufficiently many samples are taken
+	Gibbs sampler is a Markov chain (time invariant since same conditional posterior used in each cycle) since theta^t is sampled using only components of theta^t-1
+	posterior is stationary for the Gibbs sampler, and it tends to be the limiting distribution with rare exceptions
+	one limitation is that every conditional posterior must be easy to sample
+		may be true for theta_j if it is one-dimensional or its conditional distribution is a standard distribution as when the prior is chosen to make theta_j partially conjugate
+	Gibbs sampler is easiest to implement when the prior is chosen to make all components of theta partially conjugate 	
+		can sometimes use data augmentation to restore partial conjugacy
+	another potential problem is that variates from a Gibbs sampler tend to be highly dependent when components of theta have high posterior dependence
+		can use block updates (make theta_j multivariate)
+		can also use parameter expansion
+
+7.2 Gibbs Sampler Example
+	we have y_i | mu, sigma^2 ~ iid N(mu, sigma^2) for i = 1:n
+	the conditional posterior for mu is the posterior assuming sigma^2 is fixed
+	the conditional posterior for sigma^2 is proportional to itself times the marginal posterior for mu (p(mu | y)) where proportionality is in sigma^2 only
+		the marginal times the conditional is equal to the joint (p(mu, sigma^2 | y))
+		so then conditional posterior for sigma^2 is prop to prior (p(sigma^2)) times likelihood (p(y | mu, sigma^2))
+	to use the Gibbs sampler, pick starting values mu^0 and sigma^2^0
+		for t = 1,2,... sample mu^t | sigma^2^t-1 and sigma^2^t | mu^t and keep alternating between the two
+		
+7.2 Gibbs Sampler in Practice
+	Gibbs sampler efficiency can be much lower when parameters have high posterior correlation
+	Gibbs sampler can have especially serious problems when the posterior has more than one mode (offset from each other diagonally)
+	
+7.3 Metropolis and Metropolis-Hastings
+7.3 The Metropolis Algorithm
+	general process:
+		define a convenient (easily simulated) random walk on the parameter space
+		at each iteration, simulate a step from the random walk but only accept it with a certain step-independent probability. If the step is not accepted, remain at the current location
+		use all accepted and repeated draws as a dependent sample from the posterior
+	a random walk is a Markov chain defined by a transition distribution or jumping distribution that usually has a density or kernel: J_t(theta' | theta)
+		theta' is the state at time t, theta is state at time t-1
+		this is called the proposal density of the proposal distribution in the Metropolis algorithm
+		not-neccesarily time invariant (there is a subscript of t in J_t)
+	Metropolis algorithm is:
+		choose starting value theta^0 and symmetric proposal density J_t(theta' | theta) = J_t(theta | theta')
+		for t = 1,2,...
+			sample proposal theta* from J_t(. | theta^t-1)
+			compute ratio r as p(theta* | y)/p(theta^t-1 | y)
+			set theta^t to theta* with probability min(r, 1) and to theta^t-1 otherwise
+		continue until sufficiently many draws are taken
+	the ratio (r) at iteration t compares the posterior density values at the proposal theta* to the value at the most recent draw theta^t-1 and affects whether the proposal is accepted
+		if r>1, then the proposal has a higher posterior density value and is always accepted
+		if r<1, then the proposal has a lower posterior density value and is only accepted with probability r
+	note that every iteraiton is a new draw (even if it's identical to the previous draw) so this is not like rejection sampling
+	the Metropolis algorithm only depends on the posterior through the ratio r
+		the normalizing factors cancel out so the ratio can be rewritten as the product of the prior and likelihoods at theta* in the numerator, and theta^t-1 in the denominator
+		this also means likelihood is only needed up to proportionality in theta
+	the Markov chain this generates is time invariant only if the proposal density J_t does not depend on t
+	the proposal distribution should allow all parts of the parameter space to be sampled. Otherwise, the posterior distribution might not be the limiting distribution of the Markov chain
+	
+7.3 Using and Extending Metropolis
+	to get a symmetric J_t, consider the parameter space is a vector space (or can be extended into one) and g_t is a density on this space satisfying g_t(v)=g_t(-v)
+	then a possible symmetric proposal is J_t(theta' | theta) = g_t(theta' - theta)
+		can simulate v from g_t then let theta' = theta + v
+	a very popular form of proposal is a density of the multivariate normal distribution N(theta,Sigma) where Sigma is the covariance matrix
+		this is symmetric, positive over the whole space (so can reach any location), and easily sampled
+	sampling efficiency can sometimes be improved by using a proposal distribution that is not symmetric. This is allowed by a generalization: the Metropolis-Hastings algorithm
+	Metropolis-Hastings algorithm:
+		choose starting value theta^0
+		for t = 1,2,...
+			sample proposal theta* from J_t(. | theta^t-1)
+			compute ratio r as (p(theta* | y)/J_t(theta* | theta^t-1))/(p(theta^t-1 | y)/J_t(theta^t-1 | theta*))
+			set theta^t to theta* with probability min(r, 1) and to theta^t-1 otherwise
+		continue until sufficiently many draws are taken
+	this could require evalution of the proposal density, unlike the Metropolis algorithm
+	in both, the overall (long-run) fraction of iterations at which the proposal is accepted is the acceptance rate
+		proposals highly concentrated around the current theta lead to high acceptance rate and vice versa (wide proposals -> low acceptance rate)
+		theory suggests optimal (most efficient) acceptance rate ranges from 0.44 (one dimension) to 0.23 (many dimensions)
+		usually not easy to determine analytically, a more precise estimate is the average of acceptance probabilities (min(r,1)) in a run of the chain
+	since the acceptance rate is not known in advance, use an adaptive algorithm:
+		choose a type of proposal distribution whose scale (width) can be adjusted such as the multivariate normal
+		run Metropolis(-Hastings), periodically adjusting the proposal scale to produce a more nearly optimal acceptance rate
+		during the adaptation phase, the algorithm is not a Markov chain so it's best to discard these iterations. Take samples once an approximately optimal proposal density is found
+	with the Gibbs sampler, direct sampling is easy if theta_j has a partially conjugate prior but usually not otherwise. Instead of sampling theta_j directly, use a step of Metropolis(-Hastings)
+	
+7.3 Metropolis Example
+	say we use bivariate normal proposal J_t(theta' | theta): theta' ~ N(theta, rho*I)
+		theta = (mu, sigma^2)
+		rho adjusts the width of the proposal
+	if the acceptance rate is too high, can improve it by increasing rho (make the proposal less concentrated)
+	being able to construct a Markov chain with Gibbs, Metropolis, or Metropolis-Hastings does not imply the posterior is proper
+	a slice sampler is another MCMC technique that uses special auxiliary variables
+	
+	
+
+8.1 Using MCMC in Practice
+8.1 Overview of Practical MCMC
+	running several independent chains from different starting points is recommended because it allows better convergence diagnostics, explores parameter space more effectively and aids discovery of problems with the model
+	want to initialize chains by specifying their starting values and want the values to be overdispersed (much larger/smaller than expected)
+		this way convergence diagnostics are more likely to operate as intended
+		multiple modes or unexpected posterior features are more likely to be found
+		values that are too extreme may cause software to crash
+	in hierarchical models, usually only top-level parameters (ones without parents) are initialized
+	some simulation techniques (like Metropolis) must be tuned for good performance, automatic tuning by software packages is called adaptation
+		requires an initial run during which sampling schemes are being dynamically tuned based on iterates generated
+		this sequence is not a Markov chain and may not have the posterior as a stationary distribution
+		we want to use the tuning, but discard the initial run
+	for a good chain, the posterior is the limiting distribution. There could be transient effects that do not reflect the posterior
+	burn-in is running the chain until transient effects are (almost gone) and using the iterations after that
+	general MCMC process:
+		choose number of chains and overdispersed starting points
+		run iterations for adaptation if needed
+		run more iterations for initial burn-in and convergence monitoring
+		choose iterations after convergence to be used as the posterior sample
+		asses Monte Carlo error and run more iterations until small enough
+	
+8.1 Assessing Convergence
+	a trace plot of a scalar sampled node is a line plot of its values versus the iteration number
+		when there are several chains, want to plot them all on the same graph
+		when there are several nodes, they get their own graphs
+	when traces fail to (eventually) overlap, could be a sign of nonstationarity or of very slow mixing
+	Gelman-Rubin is used to monitor between chain and within chain variance (assume psi is a scalar that's being monitored
+		if chains are sampling different regions, between chain variance should be large relative to within chain variance
+		a weighted average estimate is used which tends to overestimate when starting points are overdispersed and is unbiased if all chains are stationary
+	the Gelman-Rubin statistic (Rhat) for psi is sqrt(varhat+(psi | y)/W)
+		varhat+ is the weighted average estimate mentioned above
+		W is the within chain variance
+		it will be large when the chains are dominated by transient effects
+		should be below 1.1 to declare convergence (should approach 1 in the long run)
+	this will always require at least 2 chains, chains should have seperate/overdispersed starting values
+	each psi will have its own Rhat, and all of them need to be near 1 to declare convergence
+	this will **not** work if psi does not have a posterior variance
+	passing convergence tests does **not** guarantee convergence
+	
+8.1 Autocorrelation and Mixing
+	for a scalar function (psi) on a chain's state space, the autocorrelation at lag t is the correlation between two samples of psi that are t iterations apart
+	a chain with high autocorrelations often moves through the sampling region very slowly
+	the autocorrelation function for psi is its autocorrelation value (rho_t) versus different values of t
+		it is often estimated by estimating rho_t using sample correlation of all pairs (psi_i,psi_i+t) available from the chain
+	when graphing the autocorrelaton function, you want to see it tend to 0 quickly
+	mixing refers to the rate of decay of independence between states of a chain t iterations apart
+		mixing is slow if the dependence is high even at long lags (autocorrelation decays slowly) and vice versa
+	
+8.1 Monte Carlo Error and Sample Size
+	Monte Carlo standard error is the sqrt(var(psihat_..))
+		psihat_.. is the average psi over all iterations and chains
+		in practice, a time series estimate of this is used
+	the effective sample size is the number of draws of psi you would need to for their average to have the same standard error as psihat_.. if the posterior can be sampled independently
+		can be calculated as var(psi| y)/var(psihat_..)
+		effective sample size of at least 400 is recommended for accuracy
+		in practice, use an asymptotic version using autocorrelations
+	can thin a sequence of iterates by only using every kth iterate
+		when autocorrelations are high, using a thinned sequence is almost efficient as using the whole sequence
+		reduces memory requirements and computation time
+		
+8.2 Examples of Practical MCMC
+8.2 Rat Tumor Data: Model 1
+	good to determine crude preliminary values for parameters to help pick overdispersed starting points (ie. use the sample data)
+	
+8.2 Rat Tumor Data: Model 2
+	JAGS does not allow deterministic nodes to be initialized
+	initial values need to be set up as a list of lists
+	a version of the Gelman-Rubin statistic is called the potential scale reduction factor and can be accessed using the gelman.diag function
+	the Time-Series SE in the output of the summary function is the Monte Carlo standard error
+	
+8.2 Comments on Strategies
+	some things to do if you are having sampling difficulties, can try changing the prior, sampling model, or reparameterizing/transforming but they all have adverse effects
+	some more advanced strategies are to use auxiliary variables, expanding the parameter space, or other methods
+	some rjags and coda functions support a 'thin' parameter if you want to use thinning like coda.samples
+	can ensure reproducability by specifying RNG name and seed as part of the initialization parameters for each chain (JAGS does not use the R seed)
+	
+	
+
+9.1 Model Checking
+9.1 Sensitivity Analysis
+	Bayesian sensitivity analysis is assessment of how much posterior inferences change under reasonable change to the prior (at any level of the hierarchy)
+	examples include
+		trying proper but increasingly vague (flatter) priors to determine when they become essentially noninformative
+		trying different choices for intermediate distributions in a hierarchical prior
+		trying different parameterization
+		trying a more general sampling model (adding a parameter)
+	
+9.1 Posterior Predictive Checking: An Example
+	posterior predictive checking is comparing the data with its posterior predictive distribution
+	basic version of this procedure:
+		choose a statistic relevant to the type of discrepancy under investigation
+		evaluate the statistic on the data
+		find or approximate the distribution of the statistic under the posterior predictive distribution for the full data set
+		compare statistic value to its posterior predictive distribution and if it is too extreme, claim evidence of a discrepancy between Bayesian model and data
+	in the example from the slides, we simulate many (1000) replica data sets, and calculate the average of the test statistic used over every replica
+	
+9.1 Posterior Predictive Checking in General
+	under the model, y and the replicated ys have the same distribution but are otherwise independent (the same theta defines their common distribution)
+	since theta is unobserved, work with the posterior predictive distribution having density p(yrep | y)
+	yrep exists only to represent the posterior predictive distribution of the data so it is regarded as unobserved
+	model and data will be compared using scalar test quantity T(y, theta) which is also called a discrepancy measure when larger values indicate greater disparity
+	if it doesn't depend on theta, it's called a test statistic (a statistic only depends on data)
+		allowing T to depend on theta allows more direct definitions of discrepancies
+	when discrepancy measure T is a test statistic, the classical p-value is Pr(T(yrep)>=T(y) | theta)
+		small p-values (<0.05) indicate evidence against the model
+		to evaluate, either choose T that doesn't depend on the unknown theta or substitute a value for theta (null or estimate)
+	the posterior predictive p-value is: Pr(T(yrep, theta)>=T(y, theta) | y)
+		this ones over the joint posterior (predictive) distribution of (yrep, theta)
+		unlike classical p-values, this depends on prior
+		allows T to depend on theta, doesn't require knowing exact sampling distribution of T (ie. knowing theta), and also assesses the prior
+	can plot T(yrep) against T(y) to visualize predictive p-value
+		also add a line where they are equal and if most of the data is one on side of the line, that indicates either a very high or low p-value (close to 0 or close to 1)
+
+9.2 Case Study: Model Checking the 2016 Polls Data
+9.2 2016 Presidential Polls Data and Model
+	some fundamental assumptions:
+		polls results have normal sampling distribution 
+			not exactly true, but nearly true because of central limit theorem
+		poll means are exchangeable
+			more like an assertion: we choose to let data distinguish between the polls without incorporating any prior knowledge (other than margin of error)
+		poll means have a normal population (prior distribution)
+			conjugacy makes model easier to analyze, but not justified by any actual prior info
+		hyperparameters have a flat prior
+			mathematically convenient and seems noninformative but posterior implications are unclear (e.g. too much probability towards large tau values?)
+			
+9.2 Polls Data Model Checking
+	JAGS will recognize variables that are not linked to any observed values and simulate them seperately (rather than within the Gibbs sampler)
+	chi-square test quantities can be used to test if theta_js have a prior that is too concentrated (the test quantity/statistic will be higher)
+	
+9.2 Further Topics in Model Checking
+	checking new data against model predictions is external validation
+	marginal predictive checks are used when you only want to compare the replicated values of a single y_i to the actual y_i
+		if this is near 0 or 1, y_i could be an outlier
+		if you get this values for multiple y_is and they concentrate near 0 or 1, data are overdispersed relative to the model
+	mixed predictive checks are use for hierarchical models, and consider hyperparameters as well as regular parameters
+		some model checking may be based on a replicated theta, instead of the actual theta (but with the same hyperparameter)
+		can define mixed predictive p-values based on both the data and parameter distributions, or even just parameter distributions
+	
+	
+
+
+10.1 Linear Regression
+10.1 Regression Concepts
+	say the relationship between two variables is roughly y = beta_1 + beta_2 * x (betas are unknown)
+	the vertical departures are the errors: y - (beta_1 + beta_2 * x) which are regarded as random (which means y are too)
+	x is arguably random too since it is uncontrolled and uncertain in advance. But modeling x is  a nuisance, all we care about is how y depends on it. So regard x as constant by conditioning it
+		consider n observations X, where X has k explanatory variables (or covariates or predictors) and y represents the response or outcome
+		use only conditional distribution of y given X to make inference about parameter theta, ignoring marginal distribution of X which makes X effectively constant
+		for conditionally independent observations, likelihood is product of p(y_i | theta, X_i) for all i
+		alternatively, let (y_i, X_i) pairs be exchangeable
+		each y_i only depends on it's own X_i
+	let variable y be continuous and (essentially) unrestricted in range
+	the linear regression of y on X proposes: E(y_i | theta, X_i) = beta_1*x_i1 + ... + beta_k*x_ik where the coefficients (beta_1,...,beta_k) are in theta
+		often the first term is an intercept (x_i1 = 1)
+	ordinary linear regression is when all y_is are independent, and var(y_i | theta, X_i) = sigma^2 for all i (sigma^2 is in theta)
+	simple linear regression is when you have something of the form y = beta_1 + beta_2*x
+	
+10.1 Matrix Formulation and Normality
+	consider putting all of the xs, ys, and betas into matrices for convenience
+	so in a simple linear regression, X is a n by 2 matrix (first column is all 1s for the intercept, second is the actual x_i), beta is a 2 by 1 matrix, and y (and X*beta) is a n by 1 matrix
+	the conditional covariance matrix of y is a n by n matrix, with var(y_i | theta, X) on the diagonals, and cov(y_i, y_j | theta, X) in the ith row of the jth column elsewhere
+		since we assume conditional independence, the covariances are actually all 0
+		for ordinary linear regression, the entire matrix (var(y | theta, X)) is sigma^2*I
+	the multivariate normal distribution N(mu, Sigma) generalizes the univariate normal to vectors
+		say z ~N(mu, Sigma), then z has mean vector mu, covariance matrix Sigma, and normal elements
+	in ordinary normal-theory linear regression, we assume: y_i | theta, X ~ indep. N(X_i*beta, sigma^2) which is equivalent to y | theta, X ~ N(X*beta, sigma^2*I)
+		notice that the first is for individual elements of y, the second is for the entire y vector
+		the errors are conditionally iid N(0, sigma^2) given theta, and X
+		checking fit may involve checking errors for
+			non-zero mean structure (depending on unused variables)
+			non-normality, especially outliers
+			non-constant variance structure (depending on X)
+			non-zero covariances (e.g. between observations over time)
+	consider unobserved y~ from the same kind of regression: y~ | theta, X~ ~ N(X~*beta, sigma^2*I)
+		X~ is observed, so you predict y~ knowing X~ and the fitted model
+
+10.1 More About Variables
+	scalar transformation (log, sqrt, square) can be applied to individual variables (response or explanatory)
+	nonlinear transformations of the response may make normal-theory assumptions more tenable
+	new explanatory variables can be created by applying nonlinear transformations to the original ones
+	an explanatory variables can be centered by subtracting it average: x_i^cent = x_i - xbar
+		do this only if there is an intercept, and it doesn't involve the variable
+		sometimes improves convergence of Gibbs sampler 
+	the variable can further be standardized: x_i^stand = (x_i - xbar)/s_x 
+		s_x is the sample standard deviation 
+		now x_is beta coefficient will have the same units as the response
+	categorical variables with finitely many categories can be used as explanatory variables
+		**for each category** l, create an indicator variable which is 1 if x_i is category l and 0 otherwise
+		these variables can be used in X, but need to exclude one of them if the regression has an intercept term
+	if categories are ordered, consider using a numeric coding instead
+	a pure interaction between numerical explanatory variables x_1 and x_2 is the new variable whose values are x_i1*x_i2
+		for computational reasons, it may help to center or standardize variables before forming their interaction
+		
+10.2 Bayesian Linear Regression
+10.2 Noninformative Prior Analysis
+	in general, a prior may depend on X, since X is treated as a constant
+	posterior is proper provided columns of X are linearly independent and n>k
+		in this case, the classical ordinary least squares estimates exist
+	when n-k > 2, explicit posterior inferences include:
+		E(beta | y, X) = betahat where betahat is the classical ordinary least squares estimates
+		(there's other formulas for var(beta | y, X) and E(sigma^2 | y, X) around the 4:00 mark)
+	to simulate from posterior directly:
+		simulate sigma^2 from posterior marginal
+		simulate beta from posterior conditional (given simulated sigma^2)
+		alternatively, the actual posterior marginals for elements of beta are t-distributions that have been shifted and scaled
+	for unobserved y~ satisfying y~ | theta, X~ ~ N(X~*beta, sigma^2*I)
+		simulate theta = (beta, sigma^2) from posterior as before
+		simulate y~ given simulated theta
+		
+10.2 Bread and Peace Example: Posterior Inference
+	R has a function to apply a function to a matrix: apply(mat, 2, fun, ...)
+		mat is a matrix
+		2 is the index (2 means columns, 1 means rows)
+		fun is the function followed by any of it's parameters
+		
+10.2 Bread and Peace Example: Model Checking
+	regression diagnostics are used to check fit
+	classical regression diagnostics are based on residuals (y_i - X_i*betahat) or their "standardized" versions
+		note that residuals use betahat, errors use beta
+	residuals are proxies for the errors and "standardized" residuals for the standardized errors which have a standard normal distribution
+		though they depend on beta and sigma^2, they can still be used directly in Bayesian test quantities for diagnostic purposes	
+	for replicated yrep, the replicated standardized errors in vector epsilonrep / sigma = yrep - X*beta)/sigma have independent standard normal distributions, conditional on any beta and sigma^2
+	
+10.2 Generalizations and Extensions
+	let y have a general covariance structure: var(y | theta, X) = sigma^2*Q_y
+		Q_y is a known n by n matrix
+	the normal linear regression model becomes: y | theta, X ~ N(X*beta, sigma^2*Q_y)
+		for ordinary linear regression, Q_y = I
+	assume standard noninformative prior, and that Q_y is invertible. Then the posterior has exists and has similar form to before
+		(there's formulas around the 1:10 mark)
+		these are generalized least squares estimates
+	the case of diagonal Q_y is weighted least squares
+	if you don't want to use the noninformative prior, there is an example of a standard normal prior in the slides around 2:30 mark
+		there's also a semi-conjugate prior around the 4:45 mark
+	in the DAG, the greyed out arrows mean that a variable could possibly be a part of another ones distribution
+	
+10.3 A Linear Regression in JAGS
+10.3 Shakespeare Plays: Data and Model
+	if you can implicitly have an intercept in your model if multiple variables sum up to 1 for all i (like multiple categorical variables)
+		indicator variables that implicitly define the intercept should **not** be standardized
+	
+10.3 Shakespeare Plays: JAGS Analysis
+	dmnorm in R is the multivariate normal distribution and it uses a precision matrix (inverse of covariance matrix)
+	
+	
+	
+
+11.1 Model Evaluation and Comparison: Information Criteria
+11.1 Predictive Accuracy
+	under a model, possible sampling (data) densities for data y are: p(y | theta)
+	consider predicting a new y~ which has density: p(y~ | theta)
+		when using a given theta for prediction, there is a cost incurred depending on the actual value of y~
+		need a function of theta and y~ to measure this
+	for example, say y~ ~ N(theta, 1), then a common way to measure would be via the squared error loss (y~ - theta)^2
+		this is equivalent to the logarithmic score for which larger is better (whereas lower is better for squared error)
+	but we may not know the value of y~ in advance (take expected value of loss over y~), and the true density of y~ may not be p(y~ | theta) (take expectation wrt the "true" density which we can call f(y~))
+	Mean Squared Error of Prediction (MSEP) is E_f(y~ - theta) where E_f is the expected value using f(y~) instead of p(y~ | theta)
+		can show the optimal value of theta is E_f(y~)
+		equivalently, maximize expected score: E_f log(p(y~ | theta))
+	suppose we want to evaluate point estimate thetahat = thetahat(y) and use the logarithmic score log(p(y~ | theta)) to measure predictive accuracy
+		then ideally we would use expected log predictive density: elpd_thetahat = E_f log(y~ | thetahat) for which larger is better
+		but we don't know what f is
+	consider an approximate elpd_thetahat formed by choosing y~ to be a replication of data y and substituting observed y for y~ so that expectation is not needed
+		multiply by -2 to get the deviance: -2*log(p(y | thetahat)) for which smaller is better
+		deviance alone is not a good measure of inaccuracy of the point estimate since point estimate thetahat is chosen to fit data y, so it will appear to have greater accuracy than it really does when evaluated on the same data y
+		so the deviance will be smaller than it should be and we need to add a correction factor
+		
+11.1 AIC and DIC
+	consider the classical maximum likelihood estimator thetahat_mle. The deviance -2*log(p(y | thetahat_mle)) tends to underestimate -2*elpd_thetahat_mle
+		on average, underestimation is about 2k where k is the dimension of theta
+	the Akaike Information Criterion (AIC) is: -2*log(p(y | thetahat_mle)) + 2k and smaller values are preferred
+		can regard elpdhat_AIC = -1/2 * AIC as an estimate for elpd_thetahat_mle
+		models may be nested
+		but what if model is hierarchical or there is prior info? and what if we want to evaluate a Bayesian estimate instead?
+	consider posterior mean as a point estimate: thetahat_Bayes = E(theta | y)
+	the Deviance Information Criterion (DIC) is: -2*log(p(y | thetahat_Bayes) + 2*p_DIC
+		p_DIC is called the effective number of parameters
+	p_DIC shouldn't neccesarily equal k because
+		a strong prior effectively resizes the parameter space
+		a hierarchical model may shrink seperate parameters towards a common value (effectively fewer parameters)
+		there are two formulas for getting p_DIC and p_DICalt around the 5:30 mark
+	thetahat_Bayes, p_DIC, and p_DICalt can be approximated from a posterior sample
+	main limitation of DIC is that it is based on posterior mean 
+		its just one Bayesian point estimate (what if you want to use median or mode)
+		its not invariant to transformation (reparameterization)
+		it need not be a good summary of the full posterior (what about the variance)
+		in extreme cases, it may not exist
+	all models compared using AIC or DIC must be compared for the exact same data set y
+		different transformations of y can not be directly compared 
+		if data is reduced or summarized, this must be done for all models
+		all models must be for the exact same observations X
+	
+11.1 WAIC: A More Bayesian Approach?
+	Bayesian methods for predicting y~ don't use a "plug-in" estimate but rather a posterior predictive density. This suggests a different way to define the score for a Bayesian model: log(p_post(y~)) 
+		p_post is the posterior predictive density 
+	expected log pointwise predictive density: elppd = sum of E_f_i(log(p_post(y~_i))) for all i
+	when y~_i is a replication of observation y_i, elppd can be estimated by substitution: lppd = sum of log(p_post(y_i)) for all i
+		since the same data y is being used twice (for the posterior and then the substitution), this will tend to overestimate eppld and needs a correction
+	the Watanabe-Akaike Information Criterion (WAIC) is: WAIC=-2*lppd + 2*p_WAIC
+		some formulas for p_WAIC1 and p_WAIC2 are at the 3:00 mark
+		smaller values are preferred
+		p_WAIC1 and p_WAIC2 can be approximated using a posterior Monte Carlo sample by replacing posterior means and variances with sample means and variances
+		WAIC can be used to estimate elppd: elppdhat_WAIC = -1/2 * WAIC = lppd- p_WAIC
+		
+11.2 Computing DIC and WAIC
+11.2 DIC for Polls 2016 Data: Hierarchical Model
+	complete pooling means setting tau to 0 so that all of the polls have same mean mu (1 parameter)
+	no pooling means setting tau to infinity so that all of the thetas vary freely (can be anything)
+	complete pooling ended up being the best because it had the lowest DIC (and DIC_alt) values but hierarchical wasn't much worse
+		
+11.2 WAIC for 2016 Polls Data
+	effective number of parameters for WAIC is about half of what it was for DIC typically
+	could approximate WAIC for no-pooling and complete-pooling models using direct simulation from posterior
+	
+11.3 Further Topics in Model Evaluation and Comparison
+11.3 Bayesian Cross-Validation
+	
+	

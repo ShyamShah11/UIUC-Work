@@ -1,0 +1,547 @@
+1.1 Introductory Example
+1.1 A Sample Bayesian Example
+	true positive rate can also be called sensitivity
+	true negative rate can also be called specificity
+	marginal (unconditional) probability is probability that a random person has the disease
+	conditional probabilities have conditions such as the prob. that a persons test comes back positive given they have the disease
+	Bayes' rule allows you to flip conditions:
+		Pr(A|B)=Pr(B,A)/Pr(B)=Pr(A)Pr(B|A)/Pr(B)
+		can expand further based on the data you have
+	generally data is observed, parameters are not
+	sampling (or data distribution) is the conditional distribution of data (y) given parameters (theta) 
+		how the data would be distributed under different scenarios (different thetas)
+	prior distribution is marginal distribution of theta
+		our state of knowledge prior to observing y
+	posterior distribution is the conditional distribution of theta given y
+		our state of knowledge after observing y
+	
+1.2 Random Variables, Distributions, and Densities
+1.2 Random Variables
+	random variable is a quantity whose uncertainty can be measured in terms of probability
+	its distribution defines the collection of probability statements that may be made about it
+	a random variable is discrete if it has countably many values. It has a discrete distribution with discrete density: p(u)=PR(U=u)
+		the collection of probabilities of the density function must sum to 1: over all u, sum of p(u)=1
+	a random variable is continuous takes values on a continuum and has a continuous distribution with continuous density: p(u)>=0
+		the probability that a continuous random variable U is in a range D is the integral of p(u)du on the range D
+		p(u)du has to integrate to 1 over the entire range of values U can be
+		continuous density can be greater than 1, but total area under the curve has to equal 1
+	binomial distribution is an example of a discrete distribution
+	normal distribution is an example of a continuous distribution
+	expected value (or mean/expectation,E(U)) can be obtained by multiplying density functions by the values
+		for discrete: over all u, sum of u*p(u)
+		for continuous: integral of u*p(u)du
+	more generally, you can get the expected value of a function of u (say g(u)) by replacing the u's added above with g(u) when they exist
+	variance can be calculated as var(U) = E((U-E(U))^2)
+		expectation of squared difference between a value and its expectation when it exists
+	square root of variance is the standard deviation
+	for binomial distributions, mean is n*p, variance is np(1-p)
+	for normal distributions, mean is mu, variance is sigma^2
+	
+1.2 Several Random Variables
+	joint distribution of U and V defines all probability statements concering them
+		can regard this as the distribution of random vector (U, V)
+	if U and V are both discrete or jointly continuous, their joint distribution is characterized by a joint density
+	individual distributions of U and V are called marignal distributions which can be obtained from the joint distribution
+		to get marginal distribution for a u, consider all values of v
+	can get expected values similarly to how it was done with single random variables
+	U and V have a covariance: cov(U, V)=E((U-E(U))(V-E(V))) and a correlation: cov(U,V)/sqrt(var(U)var(V))
+	conditional distribution is what the distribution of one variable would be if the others fixed
+	conditional distributions may have a condition density: p(u|v)
+		it may be discrete or continuous, it is non-negative, and sums/integrates to 1 over it's first argument (u when considering p(u}v))
+	if U and V have a joint density: p(u,v)=p(v)p(u|v)
+	conditional variance of U given V=v: var(U|V=v)=E((U-E(U|V=v))^2|V=v)
+	
+1.2 Independence
+	if A and B are independent events: Pr(A intersect B)=Pr(A)*Pr(B). Same thing for random variables too 
+	if U and V are independent and have marginal densities that are either both discrete or both continuous: p(u,v)=p(u)p(v)
+	if U and V are independent, conditional distribution is the same as marginal distribution: p(u|v)=p(u) for all v
+	if two random variables are given their own distributions (ie. only marginal distributions are specified), we can assume they are independent
+	U and V are conditionally independent given W=w if their joint distribution (conditional on W=w) specifies them as independent
+		if this is true for all values of w, U and V are conditionally independent given W
+	conditional independence does not imply independence or vice versa
+	
+1.2 Transformation and Variate Generation
+	let U be a continuous random variable and let V=f(U) where f one-to-one with a differentiable inverse. Then V is also continuous with density given by transformation of variables formula
+		this can be expressed as p(v)=p(u)|du/dv|  (p is a different density on LHS and RHS)
+	distribution features don't necessarily transform in the same way as random variables
+	can obtain variates from any univariate distribution from U(0,1) variates
+		let random variable V have cumulative distribution function F(v*)=Pr(V<=v*) 
+		define F-1(u)=min{v:F(v)>=u) where 0<=v<=1
+		then if U~U(0,1), F-1(U) has the same distribution as V
+		so plug in a uniform variate that's ~U(0,1) into the inverse of a cumulative distribution function 
+	this methods practical if F-1 can be evaluated quickly and practically but software has RNGs built in like rnorm in R
+		rnorm (5,2,sqrt(3)) gives five independently sampled variates from N(2,3)
+	if we only know conditional distribution of V given U, forward simulation can be used
+		draw usim from marginal distribution of U
+		draw vsim from conditional distribution of V given U=usim
+		vsim is a variate from marginal distribution of v
+		should also use a new usim for each vsim
+
+1.3 Bayesian Fundamentals
+1.3 Concepts, Notation, and Terminology
+	a Bayesian model is specified by the prior and sampling distribution: p(theta) is the prior, p(y|theta) is the sampling
+		together these define any probability statements about y and theta, whether joint, marginal or conditional
+	Bayesian inference about theta is based on the posterior density: p(theta|y) whichdefines the posterior distribution
+	Bayes' rule specifies how to derive the posterior from the Bayesian model: p(theta|y)=p(theta)*p(y|theta)/p(y)
+		p(y) is the normalizing factor and is defined as the sum/integral of p(theta)p(y|theta) over theta. It is a density in theta and can be difficult to compute
+	the normalizing factor is a constant, so Bayes' rule can be written in an unnormalized form by excluding it
+		proportionality is in theta, so we need to maintain all factors of theta
+	p(y|theta), when regarded as a function of theta for a fixed y is the likelihood, not generally a density in theta
+	we will often write p(y|theta) prop to some expression in theta (and maybe y) where the expression is guaranteed to be proportional in theta only
+	
+1.3 A Binomial Example
+	get an expression proportionate to the likelihood (p(y|theta)) based on a binomial distribution
+	use a uniform distribution for the prior which doesn't imply any prior knowledge (U(0,1)) and multiply them 
+	look up a table of densities to find this looks similar to a beta distribution which gives posterior distribution
+	in R, dbeta gives density of beta distrbution
+	if we want to use an informative prior (ie. we know between 5% and 40% of households would be interested), we can use a different prior like a beta distribution
+	in R, pbeta gives probabilities that you are under a given value using a beta distribution
+	a family of priors is conjugate for a sampling distribution if each of them produces a posterior that is of that same family
+		while not necessary, it is more convenient
+		
+1.4 Bayesian Tools for Inference
+1.4 Tools for Estimation and Testing
+	classical inference tools include point estimates, standard errors, confidence intervals, hypothesis tests and point predictions and intervals
+	Bayesian inference also has posterior point estimates, measures of posterior spread, posterior (credible) intervals), posterior probabilities, posterior predictive distributions
+	single-number summaries of the posterior distribution of scalar parameter theta include: posterior mean (if it exists): E(theta|y), posterior median and posterior mode
+		look up formulas for these in the textbook
+	can also use R to simulate posterior mean and median
+		use rbeta to get independent samples and then get the mean/median of the samples
+		use qbeta to get quantiles and get the 0.5 quantile to find the true median
+	to measure uncertainty, can use posterior standard deviation if it exists
+		use the standard deviation of the samples from rbeta
+	a posterior (credible) interval is one that contains theta with specified posterior probability
+		central posterior interval is the 100(1-alpha)% posterior interval which is the range between alpha/2 and 1-alpha/2 posterior quantiles
+		can use quantile function in R to approximate this too (qbeta gives the true interval)
+	can get posterior probabilities by applying a boolean operation to the samples and taking the mean of the results: mean(posterior.samples>-0.15)
+	
+1.4 Tools for Prediction
+	let y~ be the number of interested households in a new neighbourhood
+	distribution of y~ given the data y is the posterior predictive distribution with density: p(y~|y)=integral of p(y~|theta)p(theta|y)dtheta
+	can use forward simulation to approximate this
+		get predictive.samples from a binomial distribution using rbinom in R with n=100 and p=posterior.samples to get 100 samples
+		so each sample will use n=100 and the corresponding posterior sample which is a posterior prediction for theta as the probability
+		then we can use predictive.samples to approximate different things
+	can also get posterior predictive density of y~ by plotting predictive.samples
+	if we want to predict a value for y~ use E(y~|y) and use the standard deviation to quantify it's uncertainty
+		get the mean over predictive.samples for E(y~|y) and same with standard deviation
+		can also get posterior predictive intervals by looking at quantiles of predictive.samples
+	there may also be prior probabilities, prior expected values, and prior intervals
+	similarly there may be a prior predictive distribution for y~ based on the prior and sampling distribution but ignoring the data 
+		use prior.samples instead of posterior.samples to achieve this
+	these can help choose a prior and possibly assess the Bayesian model
+
+2.1 Mean-Only Normal Sample
+2.1 Introduction by Example
+	in R, use read.csv to load in a table
+	being skewed to the right means that most values are on the left and vice versa
+		can use a log scale instead
+		want to get a normal sampling distribution so skew is not ideal
+	in a normal sample, observations are conditionally iid (given mean and variance of the normal distribution they follow)
+	the normal sampling joint density can be taken as the product of p(y|mu,sigma^2) for all elements of y
+	functions of mu and sigma^2 are the likelihood function
+	sample mean and sample variance is calculated using the regular mean and variance formulas using the observed data
+	likelihood is proportional in mu and sigma^2 (there are terms that rely on combinations of the two)
+	in the mean only model, sigma^2 is a constant so theta is only mu. So the likelihood is only proportional to the terms relying on mu
+	
+2.1 Conjugate Prior Analysis
+	when looking at the likelihood in the mean-only model, the term that p(y|mu) is proportionate to looks like the density of a normal distribution
+	so we'll try a normal prior distribution for mu. We'll say mu ~ N(mu_0,tau_0^2) which gives a density for mu too
+		now we have p(mu) prop to something that looks like a normal density, and p(y|mu) also prop to something that looks like a normal density
+		can use Bayes' rule to combine the two, can complete the square to find another expression that looks like a normal density for p(mu|y)
+			this density uses two new terms: mu_n, tau_n^2
+				mu_n is the posterior mean, and is the weighted average of prior mean mu_0 and sample mean ybar with their precisions as weights
+	a normal prior is conjugate for normal mean-only model
+	precision is the reciprocal of the variance
+	n(number of observations), ybar(sample mean), and s^2(sample variance) are all taken from the observed data
+	if we're assuming sigma^2 is known, a fair assumption would be to set it to s^2
+	a prior mean and variance can be chosen based on external resources (ie. another study/experiment) 
+	also need to calculate mu_n and tau_n^2 based on these values
+	in this case we can see that poseterior and prior densities are both normal, but posterior is much more peaked meaning data was informative
+	we can use mu_n and tau_n^2 to calculate a 95% posterior interval and convert it back to the non-log scale but this does not give an interval for the mean on the original scale
+		this is because mean doesn't transform over non-linear transformations
+		could be for the median though
+	
+2.1 Flat Prior Analysis
+	with a normal prior on mu (mu ~ N(mu_0, tau_0^2)), we ended up with a normal posterior (mu|y ~ N(mu_n,tau_n^2))
+	if we take tau_0^2 (variance for the prior) to be infinity, we get a less certain prior. mu|y converges in distribution to N(ybar,sigma^2/n)
+		sigma^2/n is also the sampling variance for ybar
+		this does not depend on prior mean mu_0
+		leads to posterior inference driven by data instead of prior
+	there is a prior distribution that produces N(ybar, sigma^2/n) but it is not a proper density (does not represent an actual distribution)
+		consider p(mu) prop to 1. The integral over this is always going to be infinity so it can not be normalized to a true density, hence it is improper
+		this is a flat prior and is also called noninformative
+	you can use an improper prior as long as Bayes' rule produces a proper posterior
+		in this case, since p(mu) prop to 1, the posterior is prop to the prior likelihood
+	even though the posterior converges as tau_0^2 goes to infinity, the prior does not. The prior converges to 0, does not converge to a flat prior proportionate to 1
+	an improper prior does not define a true distribution, so sampling from it is impossible. Also makes forward sampling impossible
+	
+2.1 Posterior Prediction
+	let y~ be a newly sampled value from the sampling distribution. Then according to our model, y~|mu ~ N(mu, sigma^2)
+	assuming sigma^2 is still fixed and known, we still don't know mu
+	posterior predictive density is: p(y~|y) = integral of p(y~|mu,y)p(mu|y)dmu
+		first density p(y~|mu,y) comes from y~|mu,y ~ N(mu, sigma^2) since y~ comes from the sampling distribution and is independent of y
+		the second density p(mu|y) comes from the posterior. For a normal prior we have N(mu_n,tau_n^2)
+	note that y~-mu|mu,y ~ N(0,sigma^2) so conditional on y, y~-mu is normally distributed and independent of theta
+	so we can write y~ as (y~-mu)+mu and the sum of two independent normally distributed random variables has a normal distribution (with the sum of their means and variances)
+		then y~|y ~ N(mu_n, sigma^2+tau_n^2)
+	in R, pnorm gives you area under the normal curve. This can be used when you want to predict that a newly sampled observation is over a certain value
+		for example, Pr(y~>=15|y)
+	if we used the flat prior instead, y~|y ~ N(ybar, sigma^2 + sigma^2/n)
+	
+2.2 Two-Parameter Normal Sample
+2.2 Conjugate Prior Analysis
+	realistically both mu and sigma^2 are unknown. So theta consists of both mu and sigma^2 
+	the likelihood for p(y|mu,sigma^2) we have been considering only used terms that relied on mu. Now we use all of them
+	want to find a conjugate prior by finding a joint prior density of form similar to the likelihood
+		introduce a few new variables here: v_0, sigma_0^2, k_0, mu_0
+		mu and sigma^2 are dependent under this prior
+		conditional prior on mu given sigma^2 is N(mu_0, sigma^2/k_0)
+	to get the marginal prior of sigma^2, integrate p(mu, sigma^2) dmu. This is prop to the scaled inverse chi-square distribution: sigma^2 ~ Inv-X^2(v_0,sigma_0^2)
+		also called the inverse gamma distribution
+	the full prior can then be specified as:
+		mu|sigma^2 ~ N(mu_0, sigma^2/k_0)
+		sigma^2 ~ Inv-X^2(v_0, sigma_0^2)
+	then using unnormalized Bayes' rule, posterior density is prop to p(sigma^2)p(mu|sigma^2)p(y|mu,sigma^2)
+	can then find that posterior is:
+		mu|sigma^2,y ~ N(mu_n, sigma^2/k_n)
+		sigma^2|y ~ Inv-X^2(v_n, sigma_n^2)
+	prior specification is conjugate with joint distribution sometimes called normal-inverse-gamma	
+	can think of mu_0 as a prior guess for mu, sigma_0^2 as a prior guess for sigma^2, k_0 as prior certainty about mu, v_0 as prior certainty of sigma^2
+	in practice, we choose values for mu_0, sigma_0^2, k_0,and v_0
+	simulation from posterior is usually easier than using the formulas
+	note that v_n*sigma_n^2/sigma^2 | y ~ X_vn^2. Since scaled inverse chi squared isn't implemented in R, we'll use this (rchisq function)
+	
+2.2 Noninformative Prior Analysis
+	can use the same noninformative mean prior as above (p(mu) prop to 1)
+	for a noninformative variance prior, we want v_0 (which represents certainty of sigma_0^2 guess) to be 0. Setting it to 0 gives p(sigma^2) prop to 1/sigma^2
+	this density turns out to be improper infinite area near 0 and infinity but again can still be useful if posterior is proper
+	note formal transformation of variables shows equivalence to flat prior on the log scale: p(log sigma^2) prop to 1
+		hence scale invariance
+	treating mu and sigma^2 as independent under the prior gives p(mu, sigma^2) prop to p(mu)p(sigma^2) prop to 1/sigma^2
+		can regard as a flat prior on (mu, log sigma^2)
+		formally related to conjugate prior with v_0=-1, sigma_0^2=0, k_0=0 which are not valid constants
+	applying Bayes' rule, this implies the posterior distributions:
+		mu|sigma^2, y ~ N(ybar, sigma^2/n)
+		sigma^2|y ~ Inv-X^2(n-1,s^2)
+		so posterior is proper (when n>1,s^2>0)
+	consider a new single observation y~ from the sampling distribution, but independent from the data y:y~|mu, sigma^2, y ~ N(mu, sigma^2)
+	if sampling distribution is incorrectly specified, inference about some parameters may remain acceptable if sample size is large enough (central limit theorem)
+		but posterior predictive distributions can be misleading
+		
+3.1 A Binomial Hierarchical Model
+3.1 Motivation: Rat Tumor Data
+	j is the number of experiments, n_j is the number of rats per experiment, y_j is the number of rats that develop a tumor
+		assume n_j is fixed, y_j is random
+	if control group rats develop tumors independently and with same probability, y_j ~ Bin(n_j,?) where we don't know the probability and we'll call it theta_j
+		so we have y_j ~ Bin(n_j, theta_j)
+	to find/pick theta_j we want to compromise between using the same theta for each experiment, or using completely different ones for each
+		we'll have seperate probabilities (theta_1, theta_2,...) but they'll have something in common
+		regard the experiments as if sampled from a population of possible experiments
+	this way we can define an overall probability of tumor, assess variability among experiments, and can use more informative prior to potentially improve estimation
+	but distribution for theta_j is unknown
+	
+3.1 Hierarchical Model for Rat Tumors
+	natural parametric choice for a distribution of probabilities is the beta distribution because its continuous and gives probability of 1 to interval (0,1)
+	model now has two levels:
+		lower level: y_j | theta_j ~ Bin(n_j, theta_j)
+		higher level: theta_j ~ Beta (alpha, beta)
+	this is called a hierarchical or multilevel model
+	alpha and beta are called hyperparameters because they're at a higher level in the hierarchy. We'll choose them using a prior distribution called a hyperprior
+	there's no natural conjugate choice for the hyperpriors of alpha and beta
+	can use an exponential distribution for example and make it less informative by choosing lambda closer to zero: alpha, beta ~ iid Expon(lambda)
+	alternative suggestion is to consider transformation of the hyperparameters: p(alpha/(alpha+beta), (alpha+beta)^0.5) prop to 1
+		alpha/(alpha+beta) turns out to be the expected value of the beta distribution and we'll call it mu
+		(alpha+beta)^0.5 is approx to a scaled standard deviation for the hyperprior
+		this is an improper prior but it gives a proper posterior
+	using improper hyperpriors is dangerous, if one is used then must be able to verify posterior
+	natural to assume different experiments are independent so we can consider pairs (y_j, theta_j) to be conditionally independent given the population of the experiments (alpha and beta)
+	so theta_js are conditionally independent given alpha and beta and y_jis conditionally independent of alpha and beta given theta_j
+	can express these relationships with a joint density: p({y_j},{theta_j},alpha,beta) = p(alpha,beta)p({y_j},{theta_j}|alpha,beta) = p(alpha,beta) p(theta_j|alpha, beta)	p(y_j|theta_j) for all j
+	putting it all together:
+		y_j | theta_j ~ Bin(n_j, theta_j)
+		theta_j | alpha, beta ~ Beta (alpha, beta)
+		alpha, beta ~ some joint distribution
+		
+3.2 Hierarchical Modeling Fundamentals
+3.2 Exchangeability
+	consider join density: p(theta) = p(theta_1, theta_2,...,theta_J)
+	random variables theta_1,...,theta_J are exchangeable if, for any permutation, pi_1,...,pi_J of indices 1,...,J, p(theta_pi_1,...,theta_pi_J)= p(theta_1,...,theta_j)
+		we're just reordering the thetas
+		implies they all have the same marginal distribution
+	we model random variables as exchangeable when they represent the same kind of quantity and you either
+		have no prior information to make distinctions or
+		have only unreliable or controversial prior information - choose to ignore, let data decide
+	in the rat tumor model, we can model thetas as exchangeable since there's no way to distinguish experiments other than data values and no reason to believe theta_j depends on n_j
+	cannot model y_js as exchangeable because they do depend on n_j and they differ
+		but we can argue for exchangeability of (y_i, n_i) pairs if willing to consider a distribution for n_is
+	iid random variables are exchangeable
+	random variables that are conditionally iid are also exchangeable
+		consider their density functions, since they're independent we're multiplying density functions for different indexes of the variable which is commutative
+	random variables can be exchangeable when not iid but the conditions for this are less likely
+	
+3.2 Hierarchical Model Representations
+	can use graphical model to visualize models
+		variables are nodes and connections are edges
+		it is a directed acyclic graph
+		each variable in a circle is random, if it's shaded its observed (data)
+		the rounded rectangle is a plate, all nodes on a plate are vectors with length J
+		a child's distribution is specified conditionally on its parents only 
+		top-level variables have distributions defined marginally (unconditionally) and they are marginally independent if they occupy different nodes
+		double lines on edges show that the parents are used to deterministically defined the children (ie. using an expression instead of a distribution)
+		nodes are deterministic if they are defined as an exact function of their parents and stochastic if any parents define parameters of distributions
+		constant nodes are not circled or shaded and are always observed
+	BUGS is the original Bayesian simulation software, we use JAGS
+	rule of thumb when writing JAGS models, anything in a plate is defined in for loops, everything else is not
+		<- is used for deterministic relations, ~ is used for stochastic
+	note that dbin takes the theta parameter first
+	can simulate a flat distribution by taking a uniform distribution over a large range since JAGS only allows proper distributions
+	
+3.3 Binomial Hierarchical Models in R/JAGS
+3.3 Running JAGS in R
+	can use read.table to get data from a .txt file
+	can get a naive estimate of theta_j: y_j/n_j
+	when using the model where alpha, beta ~ indep. Expon(lambda), choosing lambda small make hyperprior flatter, but choosing it too small can be bad
+	can use the length function in a JAGS model
+	can use JAGS in R using the rjags package
+	jags.model creates the model object 
+	first run the model using update function to warm it up (aka burn-in)
+	then use coda.samples to save the samples that are produced
+		this returns an mcmc.list object which can be converted to a matrix to make working with it easier
+	data values are not allowed for deterministic nodes
+	
+3.3 Rat Tumor Results
+	can use the summary function to get information from the generated variates
+		this will give posterior mean/standard deviation/intervals for both alpha and beta
+	can use the densityplot function (in the lattice package) to plot density for both variables. This will show marginal distributions
+	can also plot joint posterior distributions by using the plot function
+		sometimes plotting transformations can provide more insight
+	to figure out whether exponential hyperprior was diffuse enough, we can try again with a less informative prior (the one with the phis)
+	there will be an error when initializing this model because of a misbehavior in a JAGS sampler
+		can make the hyperprior on phi2 more informative (go from U(0,1000) to U(0,10)
+		can truncate the beta distribution away from its endpoints
+		can turn off the sampler causing the problem which is what we end up doing
+	with this model we don't see high correlation between the transformed values
+	can also use the contour and kde2d functions (from the MASS package) to make a contour plot
+	can use the posterior samples of alpha and beta to simulate values from the posterior predictive distributionfor theta~
+	theta~ is exchangeable with the other thetas but it's not a vector, so in the graphical model, it will be just like theta but not on the plate (same parents but no children)
+	R seed does not set the JAGS seed but the JAGS seed can also be set
+	
+4.1 A Normal Hierarchical Model
+4.1 Hierarchical Model for 2016 Polls
+	y_j is the Clinton lead in percentage points in poll j, sigma_j is half the margin of error of y_j, j goes from 1 to 7
+	results come from seperate polls so consider ys to be independent. They should be normally distributed: y_j|theta_j ~ N(theta_j, ?)
+	since sigma_j represents standard error of y_j: y_j|theta_j ~ N(theta_j, sigma_j^2)
+	no reasons to assume differences among polls so thetas are exchangeable and we have: theta_j|mu, tau ~ N(mu,tau^2)
+		this is reasonable if no skew in population and no outliers
+	a noninformative hyperprior is: p(mu, tau) prop to 1 which is obtained by multiplying flat priors for mu and tau 
+		this is improper so need to check for proper posterior
+	need to be careful with improper hyperpriors. If we used p(log(tau)) prop to 1 instead, we'd get an improper posterior
+	so the full hierarchical model is:
+		y_|theta_j ~ N(theta_j, sigma_j^2)
+		theta_j|mu,tau ~ N(mu, tau^2)
+		mu ~ flat on (-infinity,infinity)
+		tau ~ flat on (0, infinity)
+		
+4.2 Normal Hierarchical Model in R/JAGS
+4.2 JAGS Model for 2016 Polls
+	JAGS doesn't allow improper priors so we approximate the flat priors as
+		mu which is flat on (-infinity,infinity) -> U(-1000,1000)
+		tau which is flat on (0,infinity) -> U(0,1000)
+	note that dnorm parameterizes the normal distribution using the precision, not the variance
+	We can also consider another model where:
+		mu ~ N(0,1000^2)
+		tau ~ Inv-X^2(1,1)
+		these turn out to be partially conjugate priors
+	note that Inv-X^2(1,1) = Inv-gamma(0.5,0.5). So 1/tau^2 ~ Gamma(0.5,0.5)
+	
+4.2 JAGS Analysis for 2016 Polls
+	when using the model with the flat priors, we find that those priors were not too restrictive since samples of mu and tau are not near their limits
+	when using the other model, we find intervals for tau are narrower so it seems to be overly informative
+		inverse chi square is supposed to become less informative as its degrees of freedom and scale approach 0 but the posterior does not converge as they tend to 0
+		
+4.2 Prediction for 2016 Polls
+	let y~ be the Clinton lead by percentage points in a brand new poll 
+	to make y~ comparable, give it it's own theta~: y~|theta~ ~ N(theta~,sigma~^2), theta~|mu, tau ~ N(mu, tau^2)
+		note that theta~ is conditionally independent of the other thetas and has the same distribution so its exchangeable with them
+	use an indicator variable in the model that is 0 if a condition is false and vice versa. Then it's intervals give the predictive posterior intervals 
+		it's mean gives the posterior predictive probability of it happening
+	
+4.3 Hierarchical Models: More Details
+4.3 Generalizing the Normal Hierarchical Model
+	let y_ij be the ith observation in group j
+		so y has J parts, the jth part has n_j parts
+		assume they are all independent and identically distributed within groups: y_ij|theta_j ~ N(theta_j, sigma^2)
+		we assume sigma^2 is known and does not depend on the group
+	likelihood turns out to depend only on group averages
+		ybar_.j = 1/n_j * sum of y_ij for each i
+		their sampling variances sigma_j^2 = sigma^2/n_j
+	thus sampling model can be reduced to ybar_.j|theta_j ~ indep. N(theta_j,sigma_j^2)
+	normality of averages (ybar_.j) might be justified by central limit theorem even if y_js are not exactly normally distributed
+	for the polls example, consider product hyperprior for mu and tau: p(mu,tau)=p(mu)p(tau)
+	p(tau|y) prop to p(tau) * an expression that introduces V_mu and muhat
+	mu|tau,y ~ N(muhat, V_mu) and theta_i|mu,tau,y ~ indep. N(thetahat_j,V_j) 
+		formulas for new variables are in slides
+	to simulate from the posterior then:
+		draw tau_sim from p(tau|y) using an approx numerical method
+		draw mu_sim from p(mu|tau_sim,y)
+		draw theta_sims independently from p(theta_i|mu_sim,tau_sim,y)
+	for unknown sigma^2, provide a prior (such as scaled inverse chi-square)
+	allow sampling variances of original observations to differ by group, perhaps with a prior that makes them exchangeable
+	
+4.3 Partial Conjugacy
+	conjugacy is when posterior is from the same family of distributions as the prior
+	many standard sampling distributions have natural conjugate priors in non-hierarchical models
+	for hierarchical models, exact natural conjugacy is usually impossible 
+	terms like partial conjugacy, conditional conjugacy, and semi-conjugacy refer vaguely to the same case that the distribution specified for a parameter in the prior is in the same family as its conditional posterior
+		for example, if theta has two pieces (theta_1, theta_2), and theta_1 has a (possibly conditional) prior in the DAG model from a given family, then the conditional posterior p(theta_1|theta_2,y) is also from that family
+	recall: thetas|mu,tau ~ iid N(mu, tau^2) led to the posterior: thetas|mu,tau,y ~ indep. N(thetahat_j, V_j)
+		the distributions stayed normal reflecting that the normal family is partially conjugate for each theta_j
+		in fact, independent normals form a partially conjugate family for the theta_js jointly
+	can often discover partial conjugacy by examining form of the joint density of model
+	by conditioning and Bayes' rule: p(theta_1|theta_2,y)p(theta_2|y) = p(theta_1,theta_2|y) prop to p(theta_1,theta_2)p(y|theta_1,theta_2)
+	say we fix theta_2, we get p(theta_1|theta_2,y) prop to p(theta_1,theta_2)p(y|theta_1,theta_2) where the proportionality is in theta_1 only
+	so if the joint model density has a recognizable form in theta_1 that is the same as the possibly conditional prior in theta_1, the family of that form is partially conjugate
+	for example if you had y_j|theta_j ~ indep. Bin(n_j,theta_j) and theta_j|alpa,beta ~ iid Beta(alpha,beta):
+		joint model density proportional to: p(alpha,beta)p(theta_j|alpha,beta)
+			can look up density for beta distribution in the tables and drop p(alpha,beta) since they don't depend on thetas
+		this ends up being prop to a Beta density
+	so independent betas form conditional posterior of theta_js like the conditional prior
+	choosing priors based on partial conjugacy does not always lead to a good model like in the polls case with the normal/inverse chi-squared distributions
+
+5.1 Bayesian Tools Revisited: Computational Challenges
+5.1 Bayesian Tools & Integration
+	Bayesian tools are based on posterior density: p(theta|y)
+	theta is almost always jointly continous even if y is discrete so tools will require integrations
+	many tools are posterior expectations of some scalar function h(theta): E(h(theta)|y) = integral of h(theta)p(theta|y)dtheta
+	a posterior probability is a type of posterior expectation:
+		Pr(theta in A|y) = integral of p(theta|y) dtheta over A = integral of 1_A(theta)p(theta|y) dtheta = E(1_A(theta)|y)
+		1_A(theta) is an indicator function which is 1 if theta in A, 0 otherwise
+	posterior marginals can also be derived
+		let theta_-j = theta without theta_j
+		then the marginal posterior density of theta_j is: p(theta_j|y) = integral of p(theta|y)dtheta_-j
+			so you integrate over all thetas except the one you care about
+	the posterior lower alpha quantile of theta_j is defined implicitly in terms of an integral:
+		alpha=Pr(theta_j<=q_alpha|y) = integral of p(theta_j|y)dtheta from -infinity to q_alpha
+			for example median is q_0.5
+	an observable but unobserved y~ with sampling density p(y~|theta) has posterior predictive density p(y~|y)=integral of p(y~|theta)p(theta|y)dtheta
+		if y~ is continuous, also use integration to find posterior predictive posterior expectations
+	there are also integrations based on the prior
+		the normalizing factor is an example: p(y)=integral of p(y|theta)p(theta)dtheta
+		if the prior is proper, there are also prior expectations and probabilities
+		
+5.1 Approximating the Integrals
+	explicit integration is possible in simple cases but is usually impossible for even the simplest hierarchical models
+	for one dimensional integration over (a,b), can decompose this into intervals of length delta: integral of f(x) dx over (a,b) approx. sum of f(x)delta_j over all j (over the range (a,b))
+	when you have more dimensions, break each dimension down into intervals. But this can break down quickly as number of dimensions increase
+	also, integrand must be known exactly. Most Bayesian tools use  posterior p(theta|y) in the integrand so normalizing facator p(y) must be known too which is difficult
+	can use Monte Carlo simulation instead
+		suppose random variates theta1, theta2,...,thetaS are drawn directly from the posterior
+		then any finite posterior expectation can be approximated as E(h(theta)|y) approx. 1/S sum of h(thetas) for each s
+		no need to evaluate normalizing factor
+		can reuse same simulation samples for many different integral approximations
+		
+5.2 Approximating Bayesian Tools with Monte Carlo
+5.2 Monte Calro Approximation
+	Monte Carlo methods are approximations based on random simulation and most Bayesian tools can be well approximated by Monte Carlo
+	suppose scalar variates h(thetas) are in R vector h.sim 
+		approximation to E(h(theta)|y) in R: mean(h.sim)
+		approximation to var(h(theta)|y) and its square root: var(h.sim), sd(h.sim)
+		approximation to Pr(h(theta)>0|y): mean(h.sim>0)
+	let theta_j be a part of parameter vector theta. Then the corresponding elements (theta1_j, theta2_j,...) of the random variates are already drawn from the posterior of theta_j
+	posterior marginal summaries of theta_j can be based on these variates then
+	posterior density of a continuous theta_j can be approximated using histograms or density estimation techniques (such as kernel density estimation)
+	posterior quantiles of scalar h(theta) can be approximated with empirical quantiles
+		to approximate the alpha (lower) posterior quantile q_alpha, first put the variates h(theta1), h(theta2),...h(thetaS) in increasing order
+		then count up to the [alphaS]th value where [alphaS] is alpha*S rounded to the nearest integer
+	a predictive quantity y~ can be often drawn directly from its conditional density p(y~|theta)
+		if variate y~s is drawn from p(y~|thetas), then y~1, y~2,...y~S are variates as if drawn from posterior predictive density p(y~|y)
+		for example, say S=1000 and theta =(mu,sigma) and they are in R vectors named accordingly and y~|mu,sigma ~ N(mu,sigma^2)
+			then mu and sigma are vectors with 1000 values in them each and predictive draws of y~ can be generated via: rnorm(1000,mu,sigma)
+	if the prior is proper, same methods can be used to approximate prior means, variances, quantiles, etc. Just need to draw the variates from the prior isntead of posterior
+		however many prior quantites are usually available analytically
+		
+5.2 Evaluating Monte Carlo Error
+	Monte Carlo error is the deviation of the Monte Carlo approximation from the true value
+	it is often measured by the Monte Carlo standard error (SE): the standard deviation of the approximation that is due to random simulation
+		not the same as posterior and prior standard deviation
+	when the variates are simulated independently, Monte Carlo error is easy to evaluate. For now assume independent simulation draws theta1, theta2,..., thetaS from the posterior
+	for expected values (E(h(theta)|y)), the MC approximation is 1/S * the sum of h(thetas) for all s
+		this is correct on average because E(1/S * the sum of h(thetas) for all s | y) = 1/S * the sum of E(h(thetas)|y) for all s = E(h(theta)|y)
+	using independence, the variance of the approximation is 1/S * var(h(theta)|y)
+		so the Monte Carlo SE is sqrt(1/S * var(h(theta)|y))
+		so choosing large S can achieve high accuracy
+		can estimate sqrt(var(h(theta)|y)) using simulated variates
+			let varhat(h) be the sample variance of draws h(thetas) which can be calculated from the samples
+			then the estimated Monte Carlo SE is sqrt(1/S varhat(h))
+			this assumes draws are independent, when they are not, this is called the Naive SE
+	the number of independent draws needed to approximately attain a given SE is: Shat approx varhat(h)/SE^2
+	rule of thumb: Monte Carlo SE should be less than 1/20th of the posterior standard deviation
+		so S>varhat(h)/(sqrt(varhat(h))/20)^2=400 
+	if posterior variance exists, central limit theorem implies Monte Carlo approximate expected value is approximately normally distributed
+	if simulation draws are dependent, need different error estimates
+	error estimates for approximated quantiles exist but are less commonly used
+	
+5.3 Independent Simulation Sampling
+5.3 Direct Simulation
+	many software packages have functions for independent random sampling from standard distributions
+		standard distributions arise often in simulation from
+			the prior distribution
+			the posterior distribution when using a fully conjugate prior
+			posterior conditional distributions when using a partially conjugate prior
+	in R, these functions start with an r such as rnorm or rbeta
+		rnorm uses the standard deviation, not the variance
+	should use explicit forms of features (such as mean, variance) instead of simulating for them when possible
+	suppose we can evaluate unnormalized continuous posterior density: q(theta) prop to p(theta|y) on a fixed grid of theta values (theta1, theta2, ..., thetag) (these are not samples)
+		then an approximate posterior sample is obtained by discretely sampling the grid points with probabilities proportionate to q(theta1), q(theta2),...,q(thetag)
+	there is an R function called sample that takes S independent samples from the grid.points vector weighted by values of vectorized function q()
+	practically, grid sampling is limited to lower dimensions (1 or 2). Also requires advanced knowledge of a good range for grid
+		generally want the grid to cover values for the density that have high probability
+	deterministic numeric integration can be used instead sometimes
+	assume an independent posterior sample theta1_-j, theta2_-j,...,thetaS_-j of theta_-j is the vector theta vector without its jth component
+	then a posterior sample of jth component theta_j is obtained by independently sampling thetas_j from conditional posterior density p(theta_j|thetas_-j,y)
+		convenient if theta_j has a partially conjugate prior because then the density will be something you can explicitly sample from independently
+	can also use this to sample from a posterior predictive distribution
+	
+5.3 Rejection Sampling
+	assume we can evaluate unnormalized continuous posterior density: q(theta) prop to p(theta|y) but can't simulate from the posterior directly
+	assume there exists a g(theta) that
+		is proportional to a continuous density that is easy to sample
+		satisfies q(theta)<= M g(theta) for a known M
+	then the rejection sampling algorithm is:
+		sample theta* from the density proportional to g(theta)
+		with probability q(theta*)/(M g(theta*)), accept theta* appending it to the simulation sample. Otherwise continue
+		repeat until S samples have been accepted
+		if sampling in first step is independent, final sample will be independent
+	this requires preliminary analysis to choose g and M which can be inefficient if poorly chosen
+		it can be made adaptive but at the cost of extra computation
+		
+5.3 Importance Sampling
+	we want to approximate posterior expectation E(h(theta)|y)
+	assume we can evaluate unnormalized continuous posterior density: q(theta) prop to p(theta|y) but can't simulate from the posterior directly
+	assume we can also easily sample independently from positive continuous density g(theta) and also evaluate g(theta) either exactly or up to a constant
+	then the importance sampling algorithm is:
+		independently sample from g(theta) to produce theta1, theta2, ..., thetaS
+		approximate E(h(theta)|y) approx sum of h(thetas)w(thetas) for all s / sumof w(thetas) for all s
+			w(thetas) = q(thetas)/g(thetas)
+			w() are the importance weights, we are taking a weighted average
+	can reuse samples and weights many times (even for different functions h)
+	can estimate an effective sample size 
+	what if an independent posterior sample of theta is still needed? consider importance resampling
+	in worst case, weights are highly skewed towards large values
+	
+	
+	
+Cheatsheet:
+density for a normal distribution
+table of densities
+	beta
+	normal
+	inverse chi squared (gamma)
+	expon
+posterior means and standard deviations given distributions
+formula for mu_n and tau_n^2 from 2.1 conjugate prior analysis 3:28*
+formula for mu_n, k_n, v_n, sigma_n^2 from 2.2 conjugate prior analysis 8:57*
+formulas from 4.3 Generalizing the Normal Hierarchical Model 6:23 and 7:32*
+table from 4.3 Partial Conjugacy 8:21*
+		
