@@ -1,1 +1,12 @@
 .vscode
+*.png
+*.csv
+*.bug
+slide*.mp4
+*.docx
+*.html
+*.tex
+randomwikipedia.txt
+*.Rmd
+polls2016.txt
+*-1.pdf

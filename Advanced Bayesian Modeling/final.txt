@@ -269,7 +269,7 @@
 10.1 Regression Concepts
 	say the relationship between two variables is roughly y = beta_1 + beta_2 * x (betas are unknown)
 	the vertical departures are the errors: y - (beta_1 + beta_2 * x) which are regarded as random (which means y are too)
-	x is arguably random too since it is uncontrolled and uncertain in advance. But modeling x is  a nuisance, all we care about is how y depends on it. So regard x as constant by conditioning it
+	x is arguably random too since it is uncontrolled and uncertain in advance. But modeling x is a nuisance, all we care about is how y depends on it. So regard x as constant by conditioning it
 		consider n observations X, where X has k explanatory variables (or covariates or predictors) and y represents the response or outcome
 		use only conditional distribution of y given X to make inference about parameter theta, ignoring marginal distribution of X which makes X effectively constant
 		for conditionally independent observations, likelihood is product of p(y_i | theta, X_i) for all i
@@ -394,7 +394,7 @@
 11.1 AIC and DIC
 	consider the classical maximum likelihood estimator thetahat_mle. The deviance -2*log(p(y | thetahat_mle)) tends to underestimate -2*elpd_thetahat_mle
 		on average, underestimation is about 2k where k is the dimension of theta
-	the Akaike Information Criterion (AIC) is: -2*log(p(y | thetahat_mle)) + 2k and smaller values are preferred
+	the Akaike Information Criterion (AIC) is: AIC = -2*log(p(y | thetahat_mle)) + 2k and smaller values are preferred
 		can regard elpdhat_AIC = -1/2 * AIC as an estimate for elpd_thetahat_mle
 		models may be nested
 		but what if model is hierarchical or there is prior info? and what if we want to evaluate a Bayesian estimate instead?
@@ -440,5 +440,43 @@
 	
 11.3 Further Topics in Model Evaluation and Comparison
 11.3 Bayesian Cross-Validation
-	
-	
+	recall there are problems with using the deviance for model evaluation because it uses data y both for model fitting and estimating the expected score
+		this is why DIC/AIC/WAIC had the correction factor
+	instead consider splitting data into two sets (preferably at random): y = (y_train, y_eval)
+		use y_train to fit the model and y_eval to estimate its predictive accuracy (score)
+		but model will depend on which split of data is used and can have biased evaluation because fit is only based on a subset of the data
+	in cross-validation, use many different data splits, and combine the evaluation results
+	leave-one-out cross-validation (LOO-CV): for n observations, use the n splits in which y_eval has only one observation
+		this reduces bias since y_train is almost all of the data
+	for Bayesian models, generally assume y_train and y_eval are conditionally independent, then use log predictive density of y_eval based on y_train
+		so log(p_train(y_eval)) = log(integral(p(y_eval | theta) * p_train(theta) dtheta)
+		p_train(theta) is the posterior using only y_train
+		in LOO-CV, each y_eval is just a y_i so we denote it as log(p_post(-i)(y_i))
+	we choose combined LOO-CV estimate to be the sum over all i and larger values indicate better models
+		note that this resembles the lppd used for WAIC. Only difference is the p_post(-i) versus p_post
+	can use Monte Carlo to approximate, but we need to use a posterior where y_i is left out
+		this means we need n samples (one sample with each i missing) which can be expensive for large n
+		
+11.3 Bayes Factor
+	appealing idea for comparing models:
+		assign models prior probabilities
+		use Bayes' rule to compute posterior probabilities
+		choose model(s) with highest posterior probability
+	for data y, consider using two models H_1 and H_2 and assign them prior probabilities
+	Bayes' rule formally gives posterior probabilities p(H | y) = p(H)*p(y | H)/c 
+		c is the normalizing factor and is the same for both H_1 and H_2
+	the Bayes factor in favor of H_2 versus H1: BF(H_2;H_1) = p(y | H_2)/p(y | H_1)
+		similarly, you can get prior and posterior odds
+	can redefine the Bayes factor to be posterior odds favoring H_2/prior odds favoring H_2
+	this represents how much the odds of H_2 relative to H_1 change after seeing y
+		if BF is close to 1, indicates data do not distinguish between them well
+		if BF >> 1, indicates strong support for H_2 over H_1
+			BF between 1-3: barely mentionable data evidence for H_2 vs H_1
+			BF between 3-20: positive data evidence for H_2 vs H_1
+			BF between 20-150: strong evidence
+			BF greater than 150: very strong evidence
+	if H_1 and H_2 each fully specify a distribution for y without needing any parameters or prior:
+		then p(y | H_m) is the likelihood and BF(H_2; H_1) is the likelihood ratio
+		this is a classical (non-Bayesian) measure of evidence in favor of H_2 over H_1
+	in general, Bayes factor depends on the prior chosen and both priors must be proper so that their marginal densities are too
+	Bayes factors can be sensitive to aspects of the models that shouldn't matter and can give paradoxical results, especially when parameter spaces have different dimension
