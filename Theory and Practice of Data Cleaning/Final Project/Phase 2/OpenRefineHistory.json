@@ -1,0 +1,1849 @@
+[
+  {
+    "op": "core/blank-down",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "FMID",
+    "description": "Blank down cells in column FMID"
+  },
+  {
+    "op": "core/row-removal",
+    "engineConfig": {
+      "facets": [
+        {
+          "type": "list",
+          "name": "FMID",
+          "expression": "isBlank(value)",
+          "columnName": "FMID",
+          "invert": false,
+          "omitBlank": false,
+          "omitError": false,
+          "selection": [
+            {
+              "v": {
+                "v": true,
+                "l": "true"
+              }
+            }
+          ],
+          "selectBlank": false,
+          "selectError": false
+        }
+      ],
+      "mode": "row-based"
+    },
+    "description": "Remove rows"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Organic",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "-"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Organic"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Bakedgoods",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Bakedgoods"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Cheese",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Cheese"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Crafts",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Crafts"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Flowers",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Flowers"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Eggs",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Eggs"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Seafood",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Seafood"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Herbs",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Herbs"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Vegetables",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Vegetables"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Honey",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Honey"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Jams",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Jams"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Maple",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Maple"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Meat",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Meat"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Nursery",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Nursery"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Nuts",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Nuts"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Plants",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Plants"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Poultry",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Poultry"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Prepared",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Prepared"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Soap",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Soap"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Trees",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Trees"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Wine",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Wine"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Coffee",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Coffee"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Beans",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Beans"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Fruits",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Fruits"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Grains",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Grains"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Juices",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Juices"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Mushrooms",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Mushrooms"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "PetFood",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column PetFood"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Tofu",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column Tofu"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "WildHarvested",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [],
+        "fromBlank": true,
+        "fromError": false,
+        "to": "N"
+      }
+    ],
+    "description": "Mass edit cells in column WildHarvested"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [
+        {
+          "type": "range",
+          "name": "city",
+          "expression": "grel:facetCount(value, \"value\", \"city\")",
+          "columnName": "city",
+          "from": 1,
+          "to": 2,
+          "selectNumeric": true,
+          "selectNonNumeric": true,
+          "selectBlank": true,
+          "selectError": true
+        }
+      ],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "FOUNTAIN",
+          "Fountain"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Fountain"
+      },
+      {
+        "from": [
+          "Land O Lakes",
+          "Land O' Lakes"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Land O' Lakes"
+      },
+      {
+        "from": [
+          "Wheeling",
+          "Wheeling,"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Wheeling"
+      },
+      {
+        "from": [
+          "PARADISE",
+          "Paradise"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Paradise"
+      },
+      {
+        "from": [
+          "Berryville",
+          "berryville"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Berryville"
+      },
+      {
+        "from": [
+          "Leland",
+          "leland"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Leland"
+      },
+      {
+        "from": [
+          "Fort Pierce",
+          "fort pierce"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Fort Pierce"
+      },
+      {
+        "from": [
+          "Fishkill",
+          "fishkill"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Fishkill"
+      },
+      {
+        "from": [
+          "DuBois",
+          "Dubois"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Dubois"
+      },
+      {
+        "from": [
+          "CENTER POINT",
+          "Center Point"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Center Point"
+      },
+      {
+        "from": [
+          "EVERGREEN",
+          "Evergreen"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Evergreen"
+      },
+      {
+        "from": [
+          "Honoka'a",
+          "Honokaa"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Honokaa"
+      },
+      {
+        "from": [
+          "Wheatland",
+          "wheatland"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Wheatland"
+      },
+      {
+        "from": [
+          "New Paltz",
+          "New paltz"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "New Paltz"
+      },
+      {
+        "from": [
+          "Mt Airy",
+          "Mt. Airy"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Mount Airy"
+      },
+      {
+        "from": [
+          "Forest Park",
+          "Park Forest"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Forest Park"
+      },
+      {
+        "from": [
+          "GEORGIANA",
+          "Georgiana"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Georgiana"
+      },
+      {
+        "from": [
+          "HOpe",
+          "Hope"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Hope"
+      },
+      {
+        "from": [
+          "ORLAND",
+          "Orland"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Orland"
+      },
+      {
+        "from": [
+          "Osceola",
+          "osceola"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Osceola"
+      },
+      {
+        "from": [
+          "Spartanburg",
+          "spartanburg"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Spartanburg"
+      },
+      {
+        "from": [
+          "Henrico",
+          "henrico"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Henrico"
+      },
+      {
+        "from": [
+          "St Anthony",
+          "St. Anthony"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "St. Anthony"
+      },
+      {
+        "from": [
+          "OAKDALE",
+          "Oakdale"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Oakdale"
+      },
+      {
+        "from": [
+          "WEST BEND",
+          "West Bend"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "West Bend"
+      },
+      {
+        "from": [
+          "MCCOMB",
+          "McComb"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "McComb"
+      }
+    ],
+    "description": "Mass edit cells in column city"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "Woodstock",
+          "woodstock",
+          "WOODSTOCK"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Woodstock"
+      },
+      {
+        "from": [
+          "Brooklyn",
+          "BROOKLYN"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Brooklyn"
+      },
+      {
+        "from": [
+          "Akron",
+          "AKRON"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Akron"
+      },
+      {
+        "from": [
+          "Los Angeles",
+          "LOS ANGELES"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Los Angeles"
+      },
+      {
+        "from": [
+          "St. Louis",
+          "St Louis"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "St. Louis"
+      },
+      {
+        "from": [
+          "Canton",
+          "canton"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Canton"
+      },
+      {
+        "from": [
+          "Huntington",
+          "huntington"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Huntington"
+      },
+      {
+        "from": [
+          "New Haven",
+          "NEW HAVEN"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "New Haven"
+      },
+      {
+        "from": [
+          "sun city west",
+          "Sun City West"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Sun City West"
+      },
+      {
+        "from": [
+          "Greenville",
+          "GREENVILLE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Greenville"
+      },
+      {
+        "from": [
+          "GLENDALE",
+          "Glendale"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Glendale"
+      },
+      {
+        "from": [
+          "MILLERSBURG",
+          "Millersburg"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Millersburg"
+      },
+      {
+        "from": [
+          "DeWitt",
+          "Dewitt"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "DeWitt"
+      },
+      {
+        "from": [
+          "Glencoe",
+          "GLENCOE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Glencoe"
+      },
+      {
+        "from": [
+          "Madison",
+          "MADISON"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Madison"
+      },
+      {
+        "from": [
+          "Washington, DC",
+          "Washington DC"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Washington DC"
+      },
+      {
+        "from": [
+          "Clayton",
+          "clayton"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Clayton"
+      },
+      {
+        "from": [
+          "Montgomery",
+          "MONTGOMERY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Montgomery"
+      },
+      {
+        "from": [
+          "Milton",
+          "milton"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Milton"
+      },
+      {
+        "from": [
+          "Quincy",
+          "QUINCY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Quincy"
+      },
+      {
+        "from": [
+          "Indianapolis",
+          "Indianapolis,"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Indianapolis"
+      },
+      {
+        "from": [
+          "Greenwood",
+          "Greenwood  Greenwood"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Greenwood"
+      },
+      {
+        "from": [
+          "Harrisville",
+          "HARRISVILLE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Harrisville"
+      },
+      {
+        "from": [
+          "Plainfield",
+          "plainfield"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Plainfield"
+      },
+      {
+        "from": [
+          "Findlay",
+          "FINDLAY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Findlay"
+      },
+      {
+        "from": [
+          "Tucson",
+          "TUCSON"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Tucson"
+      },
+      {
+        "from": [
+          "Monticello",
+          "MONTICELLO"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Monticello"
+      },
+      {
+        "from": [
+          "Cambridge",
+          "cambridge"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Cambridge"
+      },
+      {
+        "from": [
+          "Lancaster",
+          "lancaster"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Lancaster"
+      },
+      {
+        "from": [
+          "Columbus",
+          "COLUMBUS"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Columbus"
+      },
+      {
+        "from": [
+          "PASADENA",
+          "Pasadena"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Pasadena"
+      },
+      {
+        "from": [
+          "Augusta",
+          "AUGUSTA"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Augusta"
+      },
+      {
+        "from": [
+          "Clarksburg",
+          "CLARKSBURG"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Clarksburg"
+      },
+      {
+        "from": [
+          "LIMA",
+          "Lima"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Lima"
+      },
+      {
+        "from": [
+          "Somerset",
+          "SOMERSET"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Somerset"
+      },
+      {
+        "from": [
+          "Miami",
+          "miami"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Miami"
+      },
+      {
+        "from": [
+          "YELLOW SPRINGS",
+          "Yellow Springs"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Yellow Springs"
+      },
+      {
+        "from": [
+          "Schenectady",
+          "SCHENECTADY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Schenectady"
+      },
+      {
+        "from": [
+          "Mobile",
+          "MOBILE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Mobile"
+      },
+      {
+        "from": [
+          "Saratoga Springs",
+          "Saratoga springs"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Saratoga Springs"
+      },
+      {
+        "from": [
+          "Dundee",
+          "DUNDEE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Dundee"
+      },
+      {
+        "from": [
+          "Huntsville",
+          "HUNTSVILLE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Huntsville"
+      },
+      {
+        "from": [
+          "Ashland",
+          "ashland"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Ashland"
+      },
+      {
+        "from": [
+          "Lawrenceville",
+          "LAwrenceville"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Lawrenceville"
+      },
+      {
+        "from": [
+          "Middleton",
+          "MIDDLETON"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Middleton"
+      },
+      {
+        "from": [
+          "Troy",
+          "TROY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Troy"
+      },
+      {
+        "from": [
+          "Olney",
+          "OLNEY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Olney"
+      },
+      {
+        "from": [
+          "Salt Lake City",
+          "SALT LAKE CITY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Salt Lake City"
+      },
+      {
+        "from": [
+          "Homewood",
+          "HOMEWOOD"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Homewood"
+      },
+      {
+        "from": [
+          "Birmingham",
+          "BIRMINGHAM"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Birmingham"
+      },
+      {
+        "from": [
+          "Fonda",
+          "fonda"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Fonda"
+      },
+      {
+        "from": [
+          "Marietta",
+          "MARIETTA"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Marietta"
+      },
+      {
+        "from": [
+          "Palmyra",
+          "PALMYRA"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Palmyra"
+      },
+      {
+        "from": [
+          "Long Beach",
+          "LONG BEACH"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Long Beach"
+      },
+      {
+        "from": [
+          "Macon",
+          "macon"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Macon"
+      },
+      {
+        "from": [
+          "Oregon",
+          "OREGON"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Oregon"
+      },
+      {
+        "from": [
+          "Jacksonville",
+          "JACKSONVILLE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Jacksonville"
+      },
+      {
+        "from": [
+          "Wayne",
+          "Wayne,"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Wayne"
+      },
+      {
+        "from": [
+          "Monument",
+          "monument"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Monument"
+      },
+      {
+        "from": [
+          "Watertown",
+          "WATERTOWN"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Watertown"
+      },
+      {
+        "from": [
+          "Frankfort",
+          "frankfort"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Frankfort"
+      },
+      {
+        "from": [
+          "Paris",
+          "paris"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Paris"
+      },
+      {
+        "from": [
+          "Stanley",
+          "STANLEY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Stanley"
+      }
+    ],
+    "description": "Mass edit cells in column city"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "-"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": ""
+      }
+    ],
+    "description": "Mass edit cells in column city"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "AÌ±asco"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": ""
+      }
+    ],
+    "description": "Mass edit cells in column city"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "Allendale borough"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Allendale"
+      }
+    ],
+    "description": "Mass edit cells in column city"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "expression": "value.toTitlecase()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column city using expression value.toTitlecase()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "expression": "value.trim()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column city using expression value.trim()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "expression": "value.replace(/\\s+/,' ')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column city using expression value.replace(/\\s+/,' ')"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "expression": "grel:if(value.contains(\",\"),\"\",value)",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column city using expression grel:if(value.contains(\",\"),\"\",value)"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "County",
+    "expression": "value.trim()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column County using expression value.trim()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "County",
+    "expression": "value.replace(/\\s+/,' ')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column County using expression value.replace(/\\s+/,' ')"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "County",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "DeKalb",
+          "Dekalb",
+          "DEKALB"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "DeKalb"
+      },
+      {
+        "from": [
+          "Santa Barbara",
+          "SANTA BARBARA"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Santa Barbara"
+      },
+      {
+        "from": [
+          "Washington",
+          "WASHINGTON"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Washington"
+      },
+      {
+        "from": [
+          "Mobile",
+          "MOBILE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Mobile"
+      },
+      {
+        "from": [
+          "Fresno",
+          "FRESNO"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Fresno"
+      },
+      {
+        "from": [
+          "Los Angeles",
+          "LOS ANGELES"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Los Angeles"
+      },
+      {
+        "from": [
+          "Humboldt",
+          "HUMBOLDT"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Humboldt"
+      },
+      {
+        "from": [
+          "Lee",
+          "LEE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Lee"
+      },
+      {
+        "from": [
+          "Butler",
+          "BUTLER"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Butler"
+      },
+      {
+        "from": [
+          "Midland",
+          "midland"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Midland"
+      },
+      {
+        "from": [
+          "Alameda",
+          "ALAMEDA"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Alameda"
+      },
+      {
+        "from": [
+          "Shasta",
+          "SHASTA"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Shasta"
+      },
+      {
+        "from": [
+          "St. Louis City",
+          "St. Louis city"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "St. Louis City"
+      },
+      {
+        "from": [
+          "Jefferson",
+          "JEFFERSON"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Jefferson"
+      },
+      {
+        "from": [
+          "Henry",
+          "HENRY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Henry"
+      },
+      {
+        "from": [
+          "Kern",
+          "KERN"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Kern"
+      },
+      {
+        "from": [
+          "Butte",
+          "BUTTE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Butte"
+      },
+      {
+        "from": [
+          "Shelby",
+          "SHELBY"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Shelby"
+      },
+      {
+        "from": [
+          "Tuolumne",
+          "TUOLUMNE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Tuolumne"
+      },
+      {
+        "from": [
+          "Orange",
+          "ORANGE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Orange"
+      },
+      {
+        "from": [
+          "Sonoma",
+          "SONOMA"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Sonoma"
+      },
+      {
+        "from": [
+          "ELMORE",
+          "Elmore"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Elmore"
+      },
+      {
+        "from": [
+          "Wilcox",
+          "WILCOX"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Wilcox"
+      },
+      {
+        "from": [
+          "LaGrange",
+          "Lagrange"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "LaGrange"
+      },
+      {
+        "from": [
+          "San Luis Obispo",
+          "SAN LUIS OBISPO"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "San Luis Obispo"
+      },
+      {
+        "from": [
+          "Inyo",
+          "INYO"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Inyo"
+      },
+      {
+        "from": [
+          "El Paso",
+          "EL Paso"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "El Paso"
+      },
+      {
+        "from": [
+          "Monroe",
+          "MONROE"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Monroe"
+      }
+    ],
+    "description": "Mass edit cells in column County"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "County",
+    "expression": "value.trim()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column County using expression value.trim()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "County",
+    "expression": "value.replace(/\\s+/,' ')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column County using expression value.replace(/\\s+/,' ')"
+  }
+]
