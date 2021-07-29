@@ -17,22 +17,22 @@ def addLocations():
         try:    
             if location:
                 if pd.isnull(row["zip"]): #check for missing zipcode
-                    data.loc[:, ("zip",index)]=str(location["postcode"]).encode("utf-8")
+                    data.loc[index,"zip"]=str(location["postcode"]).encode("utf-8")
                     zipCtr+=1
                 if pd.isnull(row["County"]): #check for missing county
-                    data.loc[:, ("County",index)]=str(location["county"]).encode("utf-8")
+                    data.loc[index, "County"]=str(location["county"]).encode("utf-8")
                     countyCtr+=1
                 if pd.isnull(row["city"]): #check for missing city in order: city, muncipality, town, village, hamlet
                     if "city" in location:
-                        data.loc[:, ("city",index)]=str(location["city"]).encode("utf-8")
+                        data.loc[index, "city"]=str(location["city"]).encode("utf-8")
                     elif "municipality" in location:
-                        data.loc[:, ("city",index)]=str(location["municipality"]).encode("utf-8")
+                        data.loc[index, "city"]=str(location["municipality"]).encode("utf-8")
                     elif "town" in location:
-                        data.loc[:, ("city",index)]=str(location["town"]).encode("utf-8")
+                        data.loc[index, "city"]=str(location["town"]).encode("utf-8")
                     elif "village" in location:
-                        data.loc[:, ("city",index)]=str(location["village"]).encode("utf-8")
+                        data.loc[index, "city"]=str(location["village"]).encode("utf-8")
                     elif "hamlet" in location:
-                        data.loc[:, ("city",index)]=str(location["hamlet"]).encode("utf-8")
+                        data.loc[index, "city"]=str(location["hamlet"]).encode("utf-8")
                     cityCtr+=1
         except KeyError: #either zip or county is missing so ignore
             pass
