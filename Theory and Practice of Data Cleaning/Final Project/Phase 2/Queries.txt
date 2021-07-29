@@ -1,0 +1,12 @@
+select count(distinct(fmid)) - count(fmid) from original;
+select count(distinct(fmid)) - count(fmid) from updated;
+select distinct(organic) from original;
+select distinct(organic) from updated;
+select distinct(maple) from original;
+select distinct(maple) from updated;
+select count(zip) from original where zip!="";
+select count(zip) from updated where zip!="";
+select count(county) from original where county!="";
+select count(county) from updated where county!="";
+select count(city) from original where city!="";
+select count(city) from updated where city!="";
