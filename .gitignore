@@ -10,3 +10,5 @@ randomwikipedia.txt
 *.Rmd
 polls2016.txt
 *-1.pdf
+*.zip
+*.properties
