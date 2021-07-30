@@ -1,0 +1,27 @@
+'''
+@begin Overall_Workflow
+@in farmersmarkets.csv @uri file:farmersmarkets.csv
+
+    @begin ProfielDataWithOpenRefine @desc Use OpenRefine to get an idea of the required data cleaning steps
+    @in farmersmarkets.csv @uri file:farmersmarkets.csv
+    @out farmersmarkets.csv @uri file:farmersmarkets.csv
+    @end ProfielDataWithOpenRefine
+    
+    @begin CleanWithOpenRefine @desc Use OpenRefine to do initial cleaning
+    @in farmersmarkets.csv @uri file:farmersmarkets.csv
+    @out farmersmarketsor.csv @uri file:farmersmarketor.csv
+    @end CleanWithOpenRefine
+    
+    @begin ExtrapolateWithPython @desc Use Python to fill out missing location info
+    @in farmersmarketsor.csv @uri file:farmersmarketsor.csv
+    @out farmersmarketspy.csv @uri file:farmersmarketspy.csv
+    @end FillWithPython
+    
+    @begin CheckImprovementsWithSQLite @desc Use sqlite queries to check integrity constraints and data improvements
+    @in farmersmarketspy.csv @uri file:farmersmarketspy.csv
+    @out farmersmarketspy.csv @uri file:farmersmarketspy.csv
+    @end IntegrityCheckWithSQLite
+    
+@out farmersmarketspy.csv @uri file:farmersmarketspy.csv
+@end Overall_Workflow
+'''

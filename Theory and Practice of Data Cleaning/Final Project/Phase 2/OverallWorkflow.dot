@@ -1,0 +1,73 @@
+
+/* Start of top-level graph */
+digraph Workflow {
+rankdir=TB
+
+/* Title for graph */
+fontname=Helvetica; fontsize=18; labelloc=t
+label=Overall_Workflow
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster_workflow_box_outer { label=""; penwidth=0
+subgraph cluster_workflow_box_inner { label=""; penwidth=0
+
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing atomic programs in workflow */
+CleanWithOpenRefine [shape=record rankdir=LR label="{<f0> CleanWithOpenRefine |<f1> Use OpenRefine to do initial cleaning}"];
+ExtrapolateWithPython [shape=record rankdir=LR label="{<f0> ExtrapolateWithPython |<f1> Use Python to fill out missing location info}"];
+
+/* Style for nodes representing composite programs (sub-workflows) in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=2 fontname=Helvetica]
+
+/* Nodes representing composite programs (sub-workflows) in workflow */
+ProfielDataWithOpenRefine [shape=record rankdir=LR label="{<f0> ProfielDataWithOpenRefine |<f1> Use OpenRefine to get an idea of the required data cleaning steps}"];
+CheckImprovementsWithSQLite [shape=record rankdir=LR label="{<f0> CheckImprovementsWithSQLite |<f1> Use sqlite queries to check integrity constraints and data improvements}"];
+
+/* Style for nodes representing non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes for non-parameter data channels in workflow */
+"farmersmarkets.csv" [shape=record rankdir=LR label="{<f0> farmersmarkets.csv |<f1> file\:farmersmarkets.csv}"];
+"farmersmarketsor.csv" [shape=record rankdir=LR label="{<f0> farmersmarketsor.csv |<f1> file\:farmersmarketor.csv}"];
+"farmersmarketspy.csv" [shape=record rankdir=LR label="{<f0> farmersmarketspy.csv |<f1> file\:farmersmarketspy.csv}"];
+
+/* Style for nodes representing parameter channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing parameter channels in workflow */
+
+/* Edges representing connections between programs and channels */
+ProfielDataWithOpenRefine -> "farmersmarkets.csv"
+"farmersmarkets.csv" -> ProfielDataWithOpenRefine
+CleanWithOpenRefine -> "farmersmarketsor.csv"
+"farmersmarkets.csv" -> CleanWithOpenRefine
+ExtrapolateWithPython -> "farmersmarketspy.csv"
+"farmersmarketsor.csv" -> ExtrapolateWithPython
+CheckImprovementsWithSQLite -> "farmersmarketspy.csv"
+"farmersmarketspy.csv" -> CheckImprovementsWithSQLite
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* Style for nodes representing workflow input ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow input ports */
+"farmersmarkets.csv_input_port" [label=""]
+
+/* Style for nodes representing workflow output ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow output ports */
+"farmersmarketspy.csv_output_port" [label=""]
+
+/* Edges from input ports to channels */
+"farmersmarkets.csv_input_port" -> "farmersmarkets.csv"
+
+/* Edges from channels to output ports */
+"farmersmarketspy.csv" -> "farmersmarketspy.csv_output_port"
+
+/* End of top-level graph */
+}
