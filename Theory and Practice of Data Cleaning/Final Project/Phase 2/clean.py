@@ -1,8 +1,13 @@
+# @begin AddLocationInfo @desc Use geopy package to find location information
+# @in farmersmarketsor.csv @uri file:farmersmarketsor.csv
+# @out farmersmarketpy.csv @uri file:farmersmarketspy.csv
+
 import pandas as pd
 import numpy as np
 from geopy.geocoders import Nominatim
 
 def addLocations():
+    
     data = pd.read_csv("Final Project/Phase 2/farmersmarketsor.csv")
     #first check for missing city and use coordinates to populate
     #lookup(data, hasCoords, "city", "municipality"), town, village, city, hamlet
@@ -38,7 +43,7 @@ def addLocations():
             pass
     print (zipCtr, countyCtr, cityCtr, ctr)
     data.to_csv("Final Project/Phase 2/farmersmarketspy.csv", index=False, encoding="utf-8")
-
+#@end  AddLocationInfo
 addLocations()
 
 
