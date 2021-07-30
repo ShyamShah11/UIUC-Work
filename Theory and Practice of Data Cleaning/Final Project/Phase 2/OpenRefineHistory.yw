@@ -1,0 +1,315 @@
+#@begin Parallel_OR #@desc Parallel OpenRefine Workflow
+#@param expression:value.replace(/\\s+/,'_')
+#@param mode:row-based
+#@param expression:value
+#@param expression:grel:if(value.contains(","),"",value)
+#@param expression:value.trim()
+#@param expression:value.toTitlecase()
+#@in city_4
+#@in Trees
+#@in Coffee
+#@in city_6
+#@in city_7
+#@in Crafts
+#@in Bakedgoods
+#@in Grains
+#@in city_2
+#@in Nuts
+#@in County
+#@in County_3
+#@in Wine
+#@in Poultry
+#@in city
+#@in Mushrooms
+#@in Maple
+#@in Juices
+#@in city_5
+#@in city_8
+#@in Soap
+#@in Honey
+#@in Tofu
+#@in Meat
+#@in County_4
+#@in Vegetables
+#@in WildHarvested
+#@in Seafood
+#@in Herbs
+#@in Plants
+#@in Beans
+#@in Flowers
+#@in Fruits
+#@in Organic
+#@in PetFood
+#@in FMID
+#@in Cheese
+#@in Prepared
+#@in city_1
+#@in city_3
+#@in Jams
+#@in County_2
+#@in Eggs
+#@in Nursery
+#@in County_1
+#@out CleanData
+#@begin core/row-removal0 #@desc Remove rows
+#@param mode:row-based
+#@in FMID
+#@out FMID_1
+#@end core/row-removal0
+#@begin core/mass-edit1 #@desc Mass edit cells in column Organic
+#@param expression:value
+#@in Organic
+#@out Organic_1
+#@end core/mass-edit1
+#@begin core/mass-edit2 #@desc Mass edit cells in column Bakedgoods
+#@param expression:value
+#@in Bakedgoods
+#@out Bakedgoods_1
+#@end core/mass-edit2
+#@begin core/mass-edit3 #@desc Mass edit cells in column Cheese
+#@param expression:value
+#@in Cheese
+#@out Cheese_1
+#@end core/mass-edit3
+#@begin core/mass-edit4 #@desc Mass edit cells in column Crafts
+#@param expression:value
+#@in Crafts
+#@out Crafts_1
+#@end core/mass-edit4
+#@begin core/mass-edit5 #@desc Mass edit cells in column Flowers
+#@param expression:value
+#@in Flowers
+#@out Flowers_1
+#@end core/mass-edit5
+#@begin core/mass-edit6 #@desc Mass edit cells in column Eggs
+#@param expression:value
+#@in Eggs
+#@out Eggs_1
+#@end core/mass-edit6
+#@begin core/mass-edit7 #@desc Mass edit cells in column Seafood
+#@param expression:value
+#@in Seafood
+#@out Seafood_1
+#@end core/mass-edit7
+#@begin core/mass-edit8 #@desc Mass edit cells in column Herbs
+#@param expression:value
+#@in Herbs
+#@out Herbs_1
+#@end core/mass-edit8
+#@begin core/mass-edit9 #@desc Mass edit cells in column Vegetables
+#@param expression:value
+#@in Vegetables
+#@out Vegetables_1
+#@end core/mass-edit9
+#@begin core/mass-edit10 #@desc Mass edit cells in column Honey
+#@param expression:value
+#@in Honey
+#@out Honey_1
+#@end core/mass-edit10
+#@begin core/mass-edit11 #@desc Mass edit cells in column Jams
+#@param expression:value
+#@in Jams
+#@out Jams_1
+#@end core/mass-edit11
+#@begin core/mass-edit12 #@desc Mass edit cells in column Maple
+#@param expression:value
+#@in Maple
+#@out Maple_1
+#@end core/mass-edit12
+#@begin core/mass-edit13 #@desc Mass edit cells in column Meat
+#@param expression:value
+#@in Meat
+#@out Meat_1
+#@end core/mass-edit13
+#@begin core/mass-edit14 #@desc Mass edit cells in column Nursery
+#@param expression:value
+#@in Nursery
+#@out Nursery_1
+#@end core/mass-edit14
+#@begin core/mass-edit15 #@desc Mass edit cells in column Nuts
+#@param expression:value
+#@in Nuts
+#@out Nuts_1
+#@end core/mass-edit15
+#@begin core/mass-edit16 #@desc Mass edit cells in column Plants
+#@param expression:value
+#@in Plants
+#@out Plants_1
+#@end core/mass-edit16
+#@begin core/mass-edit17 #@desc Mass edit cells in column Poultry
+#@param expression:value
+#@in Poultry
+#@out Poultry_1
+#@end core/mass-edit17
+#@begin core/mass-edit18 #@desc Mass edit cells in column Prepared
+#@param expression:value
+#@in Prepared
+#@out Prepared_1
+#@end core/mass-edit18
+#@begin core/mass-edit19 #@desc Mass edit cells in column Soap
+#@param expression:value
+#@in Soap
+#@out Soap_1
+#@end core/mass-edit19
+#@begin core/mass-edit20 #@desc Mass edit cells in column Trees
+#@param expression:value
+#@in Trees
+#@out Trees_1
+#@end core/mass-edit20
+#@begin core/mass-edit21 #@desc Mass edit cells in column Wine
+#@param expression:value
+#@in Wine
+#@out Wine_1
+#@end core/mass-edit21
+#@begin core/mass-edit22 #@desc Mass edit cells in column Coffee
+#@param expression:value
+#@in Coffee
+#@out Coffee_1
+#@end core/mass-edit22
+#@begin core/mass-edit23 #@desc Mass edit cells in column Beans
+#@param expression:value
+#@in Beans
+#@out Beans_1
+#@end core/mass-edit23
+#@begin core/mass-edit24 #@desc Mass edit cells in column Fruits
+#@param expression:value
+#@in Fruits
+#@out Fruits_1
+#@end core/mass-edit24
+#@begin core/mass-edit25 #@desc Mass edit cells in column Grains
+#@param expression:value
+#@in Grains
+#@out Grains_1
+#@end core/mass-edit25
+#@begin core/mass-edit26 #@desc Mass edit cells in column Juices
+#@param expression:value
+#@in Juices
+#@out Juices_1
+#@end core/mass-edit26
+#@begin core/mass-edit27 #@desc Mass edit cells in column Mushrooms
+#@param expression:value
+#@in Mushrooms
+#@out Mushrooms_1
+#@end core/mass-edit27
+#@begin core/mass-edit28 #@desc Mass edit cells in column PetFood
+#@param expression:value
+#@in PetFood
+#@out PetFood_1
+#@end core/mass-edit28
+#@begin core/mass-edit29 #@desc Mass edit cells in column Tofu
+#@param expression:value
+#@in Tofu
+#@out Tofu_1
+#@end core/mass-edit29
+#@begin core/mass-edit30 #@desc Mass edit cells in column WildHarvested
+#@param expression:value
+#@in WildHarvested
+#@out WildHarvested_1
+#@end core/mass-edit30
+#@begin core/mass-edit31 #@desc Mass edit cells in column city
+#@param expression:value
+#@in city
+#@out city_1
+#@end core/mass-edit31
+#@begin core/mass-edit32 #@desc Mass edit cells in column city
+#@param expression:value
+#@in city_1
+#@out city_2
+#@end core/mass-edit32
+#@begin core/mass-edit33 #@desc Mass edit cells in column city
+#@param expression:value
+#@in city_2
+#@out city_3
+#@end core/mass-edit33
+#@begin core/mass-edit34 #@desc Mass edit cells in column city
+#@param expression:value
+#@in city_3
+#@out city_4
+#@end core/mass-edit34
+#@begin core/mass-edit35 #@desc Mass edit cells in column city
+#@param expression:value
+#@in city_4
+#@out city_5
+#@end core/mass-edit35
+#@begin core/text-transform36 #@desc Text transform on cells in column city using expression value.toTitlecase()
+#@param expression:value.toTitlecase()
+#@in city_5
+#@out city_6
+#@end core/text-transform36
+#@begin core/text-transform37 #@desc Text transform on cells in column city using expression value.trim()
+#@param expression:value.trim()
+#@in city_6
+#@out city_7
+#@end core/text-transform37
+#@begin core/text-transform38 #@desc Text transform on cells in column city using expression value.replace(/\\s+/,' ')
+#@param expression:value.replace(/\\s+/,'_')
+#@in city_7
+#@out city_8
+#@end core/text-transform38
+#@begin core/text-transform39 #@desc Text transform on cells in column city using expression grel:if(value.contains(\",\"),\"\",value)
+#@param expression:grel:if(value.contains(","),"",value)
+#@in city_8
+#@out city_9
+#@end core/text-transform39
+#@begin core/text-transform40 #@desc Text transform on cells in column County using expression value.trim()
+#@param expression:value.trim()
+#@in County
+#@out County_1
+#@end core/text-transform40
+#@begin core/text-transform41 #@desc Text transform on cells in column County using expression value.replace(/\\s+/,' ')
+#@param expression:value.replace(/\\s+/,'_')
+#@in County_1
+#@out County_2
+#@end core/text-transform41
+#@begin core/mass-edit42 #@desc Mass edit cells in column County
+#@param expression:value
+#@in County_2
+#@out County_3
+#@end core/mass-edit42
+#@begin core/text-transform43 #@desc Text transform on cells in column County using expression value.trim()
+#@param expression:value.trim()
+#@in County_3
+#@out County_4
+#@end core/text-transform43
+#@begin core/text-transform44 #@desc Text transform on cells in column County using expression value.replace(/\\s+/,' ')
+#@param expression:value.replace(/\\s+/,'_')
+#@in County_4
+#@out County_5
+#@end core/text-transform44
+#@begin CombineDataCleaningChanges
+#@in FMID_1
+#@in Organic_1
+#@in Bakedgoods_1
+#@in Cheese_1
+#@in Crafts_1
+#@in Flowers_1
+#@in Eggs_1
+#@in Seafood_1
+#@in Herbs_1
+#@in Vegetables_1
+#@in Honey_1
+#@in Jams_1
+#@in Maple_1
+#@in Meat_1
+#@in Nursery_1
+#@in Nuts_1
+#@in Plants_1
+#@in Poultry_1
+#@in Prepared_1
+#@in Soap_1
+#@in Trees_1
+#@in Wine_1
+#@in Coffee_1
+#@in Beans_1
+#@in Fruits_1
+#@in Grains_1
+#@in Juices_1
+#@in Mushrooms_1
+#@in PetFood_1
+#@in Tofu_1
+#@in WildHarvested_1
+#@in city_9
+#@in County_5
+#@out CleanData
+#@end CombineDataCleaningChanges
+#@end Parallel_OR

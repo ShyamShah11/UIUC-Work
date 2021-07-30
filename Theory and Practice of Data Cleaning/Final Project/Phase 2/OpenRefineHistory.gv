@@ -1,0 +1,335 @@
+
+/* Start of top-level graph */
+digraph Workflow {
+rankdir=TB
+
+/* Title for graph */
+fontname=Helvetica; fontsize=18; labelloc=t
+label=Parallel_OR
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; penwidth=0
+
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing atomic programs in workflow */
+"core/row-removal0" [shape=record rankdir=LR label="{<f0> core/row-removal0 |<f1> Remove rows}"];
+"core/mass-edit1" [shape=record rankdir=LR label="{<f0> core/mass-edit1 |<f1> Mass edit cells in column Organic}"];
+"core/mass-edit2" [shape=record rankdir=LR label="{<f0> core/mass-edit2 |<f1> Mass edit cells in column Bakedgoods}"];
+"core/mass-edit3" [shape=record rankdir=LR label="{<f0> core/mass-edit3 |<f1> Mass edit cells in column Cheese}"];
+"core/mass-edit4" [shape=record rankdir=LR label="{<f0> core/mass-edit4 |<f1> Mass edit cells in column Crafts}"];
+"core/mass-edit5" [shape=record rankdir=LR label="{<f0> core/mass-edit5 |<f1> Mass edit cells in column Flowers}"];
+"core/mass-edit6" [shape=record rankdir=LR label="{<f0> core/mass-edit6 |<f1> Mass edit cells in column Eggs}"];
+"core/mass-edit7" [shape=record rankdir=LR label="{<f0> core/mass-edit7 |<f1> Mass edit cells in column Seafood}"];
+"core/mass-edit8" [shape=record rankdir=LR label="{<f0> core/mass-edit8 |<f1> Mass edit cells in column Herbs}"];
+"core/mass-edit9" [shape=record rankdir=LR label="{<f0> core/mass-edit9 |<f1> Mass edit cells in column Vegetables}"];
+"core/mass-edit10" [shape=record rankdir=LR label="{<f0> core/mass-edit10 |<f1> Mass edit cells in column Honey}"];
+"core/mass-edit11" [shape=record rankdir=LR label="{<f0> core/mass-edit11 |<f1> Mass edit cells in column Jams}"];
+"core/mass-edit12" [shape=record rankdir=LR label="{<f0> core/mass-edit12 |<f1> Mass edit cells in column Maple}"];
+"core/mass-edit13" [shape=record rankdir=LR label="{<f0> core/mass-edit13 |<f1> Mass edit cells in column Meat}"];
+"core/mass-edit14" [shape=record rankdir=LR label="{<f0> core/mass-edit14 |<f1> Mass edit cells in column Nursery}"];
+"core/mass-edit15" [shape=record rankdir=LR label="{<f0> core/mass-edit15 |<f1> Mass edit cells in column Nuts}"];
+"core/mass-edit16" [shape=record rankdir=LR label="{<f0> core/mass-edit16 |<f1> Mass edit cells in column Plants}"];
+"core/mass-edit17" [shape=record rankdir=LR label="{<f0> core/mass-edit17 |<f1> Mass edit cells in column Poultry}"];
+"core/mass-edit18" [shape=record rankdir=LR label="{<f0> core/mass-edit18 |<f1> Mass edit cells in column Prepared}"];
+"core/mass-edit19" [shape=record rankdir=LR label="{<f0> core/mass-edit19 |<f1> Mass edit cells in column Soap}"];
+"core/mass-edit20" [shape=record rankdir=LR label="{<f0> core/mass-edit20 |<f1> Mass edit cells in column Trees}"];
+"core/mass-edit21" [shape=record rankdir=LR label="{<f0> core/mass-edit21 |<f1> Mass edit cells in column Wine}"];
+"core/mass-edit22" [shape=record rankdir=LR label="{<f0> core/mass-edit22 |<f1> Mass edit cells in column Coffee}"];
+"core/mass-edit23" [shape=record rankdir=LR label="{<f0> core/mass-edit23 |<f1> Mass edit cells in column Beans}"];
+"core/mass-edit24" [shape=record rankdir=LR label="{<f0> core/mass-edit24 |<f1> Mass edit cells in column Fruits}"];
+"core/mass-edit25" [shape=record rankdir=LR label="{<f0> core/mass-edit25 |<f1> Mass edit cells in column Grains}"];
+"core/mass-edit26" [shape=record rankdir=LR label="{<f0> core/mass-edit26 |<f1> Mass edit cells in column Juices}"];
+"core/mass-edit27" [shape=record rankdir=LR label="{<f0> core/mass-edit27 |<f1> Mass edit cells in column Mushrooms}"];
+"core/mass-edit28" [shape=record rankdir=LR label="{<f0> core/mass-edit28 |<f1> Mass edit cells in column PetFood}"];
+"core/mass-edit29" [shape=record rankdir=LR label="{<f0> core/mass-edit29 |<f1> Mass edit cells in column Tofu}"];
+"core/mass-edit30" [shape=record rankdir=LR label="{<f0> core/mass-edit30 |<f1> Mass edit cells in column WildHarvested}"];
+"core/mass-edit31" [shape=record rankdir=LR label="{<f0> core/mass-edit31 |<f1> Mass edit cells in column city}"];
+"core/mass-edit32" [shape=record rankdir=LR label="{<f0> core/mass-edit32 |<f1> Mass edit cells in column city}"];
+"core/mass-edit33" [shape=record rankdir=LR label="{<f0> core/mass-edit33 |<f1> Mass edit cells in column city}"];
+"core/mass-edit34" [shape=record rankdir=LR label="{<f0> core/mass-edit34 |<f1> Mass edit cells in column city}"];
+"core/mass-edit35" [shape=record rankdir=LR label="{<f0> core/mass-edit35 |<f1> Mass edit cells in column city}"];
+"core/text-transform36" [shape=record rankdir=LR label="{<f0> core/text-transform36 |<f1> Text transform on cells in column city using expression value.toTitlecase()}"];
+"core/text-transform37" [shape=record rankdir=LR label="{<f0> core/text-transform37 |<f1> Text transform on cells in column city using expression value.trim()}"];
+"core/text-transform38" [shape=record rankdir=LR label="{<f0> core/text-transform38 |<f1> Text transform on cells in column city using expression value.replace(/\\s+/,' ')}"];
+"core/text-transform39" [shape=record rankdir=LR label="{<f0> core/text-transform39 |<f1> Text transform on cells in column city using expression grel\:if(value.contains(\",\"),\"\",value)}"];
+"core/text-transform40" [shape=record rankdir=LR label="{<f0> core/text-transform40 |<f1> Text transform on cells in column County using expression value.trim()}"];
+"core/text-transform41" [shape=record rankdir=LR label="{<f0> core/text-transform41 |<f1> Text transform on cells in column County using expression value.replace(/\\s+/,' ')}"];
+"core/mass-edit42" [shape=record rankdir=LR label="{<f0> core/mass-edit42 |<f1> Mass edit cells in column County}"];
+"core/text-transform43" [shape=record rankdir=LR label="{<f0> core/text-transform43 |<f1> Text transform on cells in column County using expression value.trim()}"];
+"core/text-transform44" [shape=record rankdir=LR label="{<f0> core/text-transform44 |<f1> Text transform on cells in column County using expression value.replace(/\\s+/,' ')}"];
+CombineDataCleaningChanges
+
+/* Style for nodes representing non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes for non-parameter data channels in workflow */
+CleanData
+FMID
+Organic
+Bakedgoods
+Cheese
+Crafts
+Flowers
+Eggs
+Seafood
+Herbs
+Vegetables
+Honey
+Jams
+Maple
+Meat
+Nursery
+Nuts
+Plants
+Poultry
+Prepared
+Soap
+Trees
+Wine
+Coffee
+Beans
+Fruits
+Grains
+Juices
+Mushrooms
+PetFood
+Tofu
+WildHarvested
+city
+city_1
+city_2
+city_3
+city_4
+city_5
+city_6
+city_7
+city_8
+County
+County_1
+County_2
+County_3
+County_4
+FMID_1
+Organic_1
+Bakedgoods_1
+Cheese_1
+Crafts_1
+Flowers_1
+Eggs_1
+Seafood_1
+Herbs_1
+Vegetables_1
+Honey_1
+Jams_1
+Maple_1
+Meat_1
+Nursery_1
+Nuts_1
+Plants_1
+Poultry_1
+Prepared_1
+Soap_1
+Trees_1
+Wine_1
+Coffee_1
+Beans_1
+Fruits_1
+Grains_1
+Juices_1
+Mushrooms_1
+PetFood_1
+Tofu_1
+WildHarvested_1
+city_9
+County_5
+
+/* Style for nodes representing parameter channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing parameter channels in workflow */
+"mode:row-based"
+"expression:value"
+"expression:value.toTitlecase()"
+"expression:value.trim()"
+"expression:value.replace(/\\s+/,'_')"
+"expression:grel:if(value.contains(\",\"),\"\",value)"
+
+/* Edges representing connections between programs and channels */
+"core/row-removal0" -> FMID_1
+"mode:row-based" -> "core/row-removal0"
+FMID -> "core/row-removal0"
+"core/mass-edit1" -> Organic_1
+"expression:value" -> "core/mass-edit1"
+Organic -> "core/mass-edit1"
+"core/mass-edit2" -> Bakedgoods_1
+"expression:value" -> "core/mass-edit2"
+Bakedgoods -> "core/mass-edit2"
+"core/mass-edit3" -> Cheese_1
+"expression:value" -> "core/mass-edit3"
+Cheese -> "core/mass-edit3"
+"core/mass-edit4" -> Crafts_1
+"expression:value" -> "core/mass-edit4"
+Crafts -> "core/mass-edit4"
+"core/mass-edit5" -> Flowers_1
+"expression:value" -> "core/mass-edit5"
+Flowers -> "core/mass-edit5"
+"core/mass-edit6" -> Eggs_1
+"expression:value" -> "core/mass-edit6"
+Eggs -> "core/mass-edit6"
+"core/mass-edit7" -> Seafood_1
+"expression:value" -> "core/mass-edit7"
+Seafood -> "core/mass-edit7"
+"core/mass-edit8" -> Herbs_1
+"expression:value" -> "core/mass-edit8"
+Herbs -> "core/mass-edit8"
+"core/mass-edit9" -> Vegetables_1
+"expression:value" -> "core/mass-edit9"
+Vegetables -> "core/mass-edit9"
+"core/mass-edit10" -> Honey_1
+"expression:value" -> "core/mass-edit10"
+Honey -> "core/mass-edit10"
+"core/mass-edit11" -> Jams_1
+"expression:value" -> "core/mass-edit11"
+Jams -> "core/mass-edit11"
+"core/mass-edit12" -> Maple_1
+"expression:value" -> "core/mass-edit12"
+Maple -> "core/mass-edit12"
+"core/mass-edit13" -> Meat_1
+"expression:value" -> "core/mass-edit13"
+Meat -> "core/mass-edit13"
+"core/mass-edit14" -> Nursery_1
+"expression:value" -> "core/mass-edit14"
+Nursery -> "core/mass-edit14"
+"core/mass-edit15" -> Nuts_1
+"expression:value" -> "core/mass-edit15"
+Nuts -> "core/mass-edit15"
+"core/mass-edit16" -> Plants_1
+"expression:value" -> "core/mass-edit16"
+Plants -> "core/mass-edit16"
+"core/mass-edit17" -> Poultry_1
+"expression:value" -> "core/mass-edit17"
+Poultry -> "core/mass-edit17"
+"core/mass-edit18" -> Prepared_1
+"expression:value" -> "core/mass-edit18"
+Prepared -> "core/mass-edit18"
+"core/mass-edit19" -> Soap_1
+"expression:value" -> "core/mass-edit19"
+Soap -> "core/mass-edit19"
+"core/mass-edit20" -> Trees_1
+"expression:value" -> "core/mass-edit20"
+Trees -> "core/mass-edit20"
+"core/mass-edit21" -> Wine_1
+"expression:value" -> "core/mass-edit21"
+Wine -> "core/mass-edit21"
+"core/mass-edit22" -> Coffee_1
+"expression:value" -> "core/mass-edit22"
+Coffee -> "core/mass-edit22"
+"core/mass-edit23" -> Beans_1
+"expression:value" -> "core/mass-edit23"
+Beans -> "core/mass-edit23"
+"core/mass-edit24" -> Fruits_1
+"expression:value" -> "core/mass-edit24"
+Fruits -> "core/mass-edit24"
+"core/mass-edit25" -> Grains_1
+"expression:value" -> "core/mass-edit25"
+Grains -> "core/mass-edit25"
+"core/mass-edit26" -> Juices_1
+"expression:value" -> "core/mass-edit26"
+Juices -> "core/mass-edit26"
+"core/mass-edit27" -> Mushrooms_1
+"expression:value" -> "core/mass-edit27"
+Mushrooms -> "core/mass-edit27"
+"core/mass-edit28" -> PetFood_1
+"expression:value" -> "core/mass-edit28"
+PetFood -> "core/mass-edit28"
+"core/mass-edit29" -> Tofu_1
+"expression:value" -> "core/mass-edit29"
+Tofu -> "core/mass-edit29"
+"core/mass-edit30" -> WildHarvested_1
+"expression:value" -> "core/mass-edit30"
+WildHarvested -> "core/mass-edit30"
+"core/mass-edit31" -> city_1
+"expression:value" -> "core/mass-edit31"
+city -> "core/mass-edit31"
+"core/mass-edit32" -> city_2
+"expression:value" -> "core/mass-edit32"
+city_1 -> "core/mass-edit32"
+"core/mass-edit33" -> city_3
+"expression:value" -> "core/mass-edit33"
+city_2 -> "core/mass-edit33"
+"core/mass-edit34" -> city_4
+"expression:value" -> "core/mass-edit34"
+city_3 -> "core/mass-edit34"
+"core/mass-edit35" -> city_5
+"expression:value" -> "core/mass-edit35"
+city_4 -> "core/mass-edit35"
+"core/text-transform36" -> city_6
+"expression:value.toTitlecase()" -> "core/text-transform36"
+city_5 -> "core/text-transform36"
+"core/text-transform37" -> city_7
+"expression:value.trim()" -> "core/text-transform37"
+city_6 -> "core/text-transform37"
+"core/text-transform38" -> city_8
+"expression:value.replace(/\\s+/,'_')" -> "core/text-transform38"
+city_7 -> "core/text-transform38"
+"core/text-transform39" -> city_9
+"expression:grel:if(value.contains(\",\"),\"\",value)" -> "core/text-transform39"
+city_8 -> "core/text-transform39"
+"core/text-transform40" -> County_1
+"expression:value.trim()" -> "core/text-transform40"
+County -> "core/text-transform40"
+"core/text-transform41" -> County_2
+"expression:value.replace(/\\s+/,'_')" -> "core/text-transform41"
+County_1 -> "core/text-transform41"
+"core/mass-edit42" -> County_3
+"expression:value" -> "core/mass-edit42"
+County_2 -> "core/mass-edit42"
+"core/text-transform43" -> County_4
+"expression:value.trim()" -> "core/text-transform43"
+County_3 -> "core/text-transform43"
+"core/text-transform44" -> County_5
+"expression:value.replace(/\\s+/,'_')" -> "core/text-transform44"
+County_4 -> "core/text-transform44"
+CombineDataCleaningChanges -> CleanData
+FMID_1 -> CombineDataCleaningChanges
+Organic_1 -> CombineDataCleaningChanges
+Bakedgoods_1 -> CombineDataCleaningChanges
+Cheese_1 -> CombineDataCleaningChanges
+Crafts_1 -> CombineDataCleaningChanges
+Flowers_1 -> CombineDataCleaningChanges
+Eggs_1 -> CombineDataCleaningChanges
+Seafood_1 -> CombineDataCleaningChanges
+Herbs_1 -> CombineDataCleaningChanges
+Vegetables_1 -> CombineDataCleaningChanges
+Honey_1 -> CombineDataCleaningChanges
+Jams_1 -> CombineDataCleaningChanges
+Maple_1 -> CombineDataCleaningChanges
+Meat_1 -> CombineDataCleaningChanges
+Nursery_1 -> CombineDataCleaningChanges
+Nuts_1 -> CombineDataCleaningChanges
+Plants_1 -> CombineDataCleaningChanges
+Poultry_1 -> CombineDataCleaningChanges
+Prepared_1 -> CombineDataCleaningChanges
+Soap_1 -> CombineDataCleaningChanges
+Trees_1 -> CombineDataCleaningChanges
+Wine_1 -> CombineDataCleaningChanges
+Coffee_1 -> CombineDataCleaningChanges
+Beans_1 -> CombineDataCleaningChanges
+Fruits_1 -> CombineDataCleaningChanges
+Grains_1 -> CombineDataCleaningChanges
+Juices_1 -> CombineDataCleaningChanges
+Mushrooms_1 -> CombineDataCleaningChanges
+PetFood_1 -> CombineDataCleaningChanges
+Tofu_1 -> CombineDataCleaningChanges
+WildHarvested_1 -> CombineDataCleaningChanges
+city_9 -> CombineDataCleaningChanges
+County_5 -> CombineDataCleaningChanges
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* End of top-level graph */
+}
